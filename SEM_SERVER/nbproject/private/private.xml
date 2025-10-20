@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/operacije/pacijent/KreirajPacijentaSO.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>16</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/server/Server.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/repozitorijum/db/DbGenerickiRepozitorijum.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/forme/ServerskaForma.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/plan_ishrane/VratiListuPlanIshraneSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/pacijent/KreirajPacijentaSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/jelo/UcitajJelaSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/ApstraktnaGenerickaOperacija.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/plan_ishrane/PromeniPlanIshraneSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/repozitorijum/Repozitorijum.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/niti/ObradaKlijentskihZahteva.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/forme/FrmKonfPort.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/pacijent/VratiListuSviPacijentSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/repozitorijum/db/DbRepozitorijum.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/plan_ishrane/VratiListuSviPlanIshraneSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/repozitorijum/db/DbConnectionFactory.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/pacijent/PromeniPacijentaSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/forme/FrmKonfBaza.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/konfiguracija/Konfiguracija.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/plan_ishrane/KreirajPlanIshraneSO.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/kontroler/Kontroler.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/main/Main.java</file>
+            <file>file:/D:/PS%20vezbe/SEM_SERVER/src/operacije/pacijent/ObrisiPacijentaSO.java</file>
+        </group>
+    </open-files>
+</project-private>
