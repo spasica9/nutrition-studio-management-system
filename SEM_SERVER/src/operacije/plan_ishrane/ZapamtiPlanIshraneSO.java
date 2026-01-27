@@ -5,6 +5,7 @@
 package operacije.plan_ishrane;
 
 import domen.PlanIshrane;
+import domen.StatusStavke;
 import domen.StavkaPlanaIshrane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import operacije.ApstraktnaGenerickaOperacija;
  *
  * @author anas
  */
-public class KreirajPlanIshraneSO extends ApstraktnaGenerickaOperacija {
+public class ZapamtiPlanIshraneSO extends ApstraktnaGenerickaOperacija {
 
     @Override
     protected void preduslovi(Object param) throws Exception {
@@ -26,16 +27,20 @@ public class KreirajPlanIshraneSO extends ApstraktnaGenerickaOperacija {
     @Override
     protected void izvrsiOperaciju(Object param, String kljuc) throws Exception {
         PlanIshrane planIshrane = (PlanIshrane) param;
+        System.out.println("DEBUG: Iznos plana koji je stigao: " + planIshrane.getUkupanIznosJela());
         PreparedStatement ps = broker.add(param);
         ResultSet rs = ps.getGeneratedKeys();
         rs.next();
         int id = rs.getInt(1);
         planIshrane.setIdPlanIshrane(id);
-        
         for (StavkaPlanaIshrane sp : planIshrane.getStavke()) {
+            if (sp.getStatus() == StatusStavke.OBRISANA) {
+                continue; 
+            }
+
             sp.setPlanIshrane(planIshrane);
             broker.add(sp);
         }
-    }
+        }
     
 }

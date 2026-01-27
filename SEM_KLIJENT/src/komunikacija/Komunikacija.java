@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -47,7 +47,7 @@ public class Komunikacija {
 
     public Nutricionista login(String username, String password) {
         Nutricionista n = new Nutricionista(username, password);
-        Zahtev zahtev = new Zahtev(Operacija.LOGIN, n);
+        Zahtev zahtev = new Zahtev(Operacija.PRIJAVA, n);
         
         posiljalac.posalji(zahtev);
         Odgovor odgovor = (Odgovor) primalac.primi();
@@ -58,7 +58,7 @@ public class Komunikacija {
     }
 
     public List<Pacijent> ucitajPacijente() {
-        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_PACIJENTE, null);
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_LISTU_PACIJENATA, null);
         List<Pacijent> pacijenti = new ArrayList<>();
         posiljalac.posalji(zahtev);
         Odgovor odgovor = (Odgovor) primalac.primi();
@@ -66,23 +66,23 @@ public class Komunikacija {
         return pacijenti;
     }
 
-    public void obrisiPacijenta(Pacijent p) throws Exception {
-        Zahtev zahtev = new Zahtev(Operacija.OBRISI_PACIJENTA, p);
-        posiljalac.posalji(zahtev);
-        
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        
-        if(odgovor.getOdgovor()==null) {
-            System.out.println("USPEH");
-        }else {
-            System.out.println("GREŠKA");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("GREŠKA");
-        }
-    }
+        public void obrisiPacijenta(Pacijent p) throws Exception {
+         Zahtev zahtev = new Zahtev(Operacija.OBRISI_PACIJENTA, p);
+         posiljalac.posalji(zahtev);
 
+         Odgovor odgovor = (Odgovor) primalac.primi();
+
+         if (odgovor.getOdgovor() == null) {
+             System.out.println("USPEH");
+         } else {
+             System.out.println("GREŠKA");
+             Exception ex = (Exception) odgovor.getOdgovor();
+             ex.printStackTrace();
+             throw ex;
+         }
+     }
     public List<Mesto> ucitajMesta() {
-        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_MESTA, null);
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_LISTU_MESTA, null);
         List<Mesto> mesta = new ArrayList<>();
         posiljalac.posalji(zahtev);
         Odgovor odgovor = (Odgovor) primalac.primi();
@@ -91,7 +91,7 @@ public class Komunikacija {
     }
 
     public void dodajPacijenta(Pacijent p) throws Exception {
-         Zahtev zahtev = new Zahtev(Operacija.DODAJ_PACIJENTA, p);
+         Zahtev zahtev = new Zahtev(Operacija.ZAPAMTI_PACIJENTA, p);
           posiljalac.posalji(zahtev);
           Odgovor odgovor = (Odgovor) primalac.primi();
            if(odgovor.getOdgovor()==null) {
@@ -103,17 +103,20 @@ public class Komunikacija {
         }
     }
 
-    public void azurirajPacijenta(Pacijent p) {
-          Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_PACIJENTA, p);
-          posiljalac.posalji(zahtev);
-          Odgovor odgovor = (Odgovor) primalac.primi();
-           if(odgovor.getOdgovor()==null) {
+       public void azurirajPacijenta(Pacijent p) throws Exception {
+            Zahtev zahtev = new Zahtev(Operacija.PROMENI_PACIJENTA, p);
+            posiljalac.posalji(zahtev);
+
+            Odgovor odgovor = (Odgovor) primalac.primi();
+
+            if (odgovor.getOdgovor() instanceof Exception) {
+                System.out.println("GREŠKA");
+                throw (Exception) odgovor.getOdgovor();
+            }
+
             System.out.println("USPEH");
             koordinator.Koordinator.getInstance().osveziFormu();
-        }else {
-            System.out.println("GREŠKA");
         }
-    }
 
     public List<PlanIshrane> ucitajPlanove() {
         Zahtev zahtev = new Zahtev(Operacija.UCITAJ_PLANOVE_ISHRANE, null);
@@ -135,7 +138,7 @@ public class Komunikacija {
     }
 
     public List<Nutricionista> ucitajNutricioniste() {
-        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_NUTRICIONISTE, null);
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_LISTU_NUTRICIONISTA, null);
         List<Nutricionista> nutricioniste = new ArrayList<>();
         posiljalac.posalji(zahtev);
         Odgovor odgovor = (Odgovor) primalac.primi();
@@ -144,7 +147,7 @@ public class Komunikacija {
     }
 
     public List<Jelo> ucitajJela() {
-        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_JELA, null);
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_LISTU_JELA, null);
         List<Jelo> jela = new ArrayList<>();
         posiljalac.posalji(zahtev);
         Odgovor odgovor = (Odgovor) primalac.primi();
@@ -153,7 +156,7 @@ public class Komunikacija {
     }
 
     public void dodajPlanIshrane(PlanIshrane planIshrane) {
-         Zahtev zahtev = new Zahtev(Operacija.DODAJ_PLAN_ISHRANE, planIshrane);
+         Zahtev zahtev = new Zahtev(Operacija.ZAPAMTI_PLAN_ISHRANE, planIshrane);
           posiljalac.posalji(zahtev);
           Odgovor odgovor = (Odgovor) primalac.primi();
            if(odgovor.getOdgovor()==null) {
@@ -164,7 +167,7 @@ public class Komunikacija {
     }
 
     public void dodajSertifikat(Sertifikat s) throws Exception {
-        Zahtev zahtev = new Zahtev(Operacija.DODAJ_SERTIFIKAT, s);
+        Zahtev zahtev = new Zahtev(Operacija.ZAPAMTI_SERTIFIKAT, s);
           posiljalac.posalji(zahtev);
           Odgovor odgovor = (Odgovor) primalac.primi();
            if(odgovor.getOdgovor()==null) {
@@ -189,7 +192,7 @@ public class Komunikacija {
     }
 
     public void izmeniPlanIshrane(PlanIshrane planIshrane) {
-        Zahtev zahtev = new Zahtev(Operacija.IZMENI_PLAN_ISHRANE, planIshrane);
+        Zahtev zahtev = new Zahtev(Operacija.PROMENI_PLAN_ISHRANE, planIshrane);
         posiljalac.posalji(zahtev);
 
         Odgovor odg = (Odgovor) primalac.primi();
@@ -198,6 +201,25 @@ public class Komunikacija {
         } else {
             System.out.println("GREŠKA");
         }
+    }
+    
+    public Pacijent ucitajPacijenta(Pacijent pacijent) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_PACIJENTA, pacijent);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        Pacijent p = (Pacijent)odg.getOdgovor();
+        return p;
+    }
+    
+    public List<Pacijent> pronadjiPacijente(Pacijent p) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.PRONADJI_PACIJENTE, p);
+        List<Pacijent> pacijenti = new ArrayList<>();
+        posiljalac.posalji(zahtev);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        pacijenti = (List<Pacijent>) odg.getOdgovor();
+        return pacijenti;
     }
     
     

@@ -131,26 +131,24 @@ public class Pacijent implements ApstraktniDomenskiObjekat {
         return "pacijent";
     }
 
-    @Override
+   @Override
     public List<ApstraktniDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
         List<ApstraktniDomenskiObjekat> lista = new ArrayList<>();
         while(rs.next()){
-            int idPacijent = rs.getInt("pacijent.idPacijent");
-            String ime = rs.getString("pacijent.ime");
-            String prezime = rs.getString("pacijent.prezime");
-            java.sql.Date sqlDate = rs.getDate("pacijent.datumRodjenja");
-            java.util.Date datumRodjenja = new java.util.Date(sqlDate.getTime());
-            String email = rs.getString("pacijent.email");
-            TipIshrane tipIshrane = TipIshrane.valueOf(rs.getString("pacijent.tipIshrane"));
-            
-            int idMesto = rs.getInt("mesto.idMesto");
-            String nazivMesta = rs.getString("mesto.nazivMesta");
-            String postanskiBroj = rs.getString("mesto.postanskiBroj");
-            Mesto m = new Mesto(idMesto, nazivMesta, postanskiBroj);
+            int idPacijent = rs.getInt("idPacijent");
+            String ime = rs.getString("ime");
+            String prezime = rs.getString("prezime");
+            java.sql.Date sqlDate = rs.getDate("datumRodjenja");
+            java.util.Date datumRodjenja = (sqlDate != null) ? new java.util.Date(sqlDate.getTime()) : null;
+            String email = rs.getString("email");
+            TipIshrane tipIshrane = TipIshrane.valueOf(rs.getString("tipIshrane"));
+            int idMesta = rs.getInt("idMesto");
+            String nazivMesta = rs.getString("nazivMesta");
+            String postanskiBroj = rs.getString("postanskiBroj");
+            Mesto m = new Mesto(idMesta, nazivMesta, postanskiBroj);
             Pacijent p = new Pacijent(idPacijent, ime, prezime, datumRodjenja, email, tipIshrane, m);
             lista.add(p);
         }
-        
         return lista;
     }
 
@@ -184,7 +182,7 @@ public class Pacijent implements ApstraktniDomenskiObjekat {
 
     @Override
     public String vratiVrednostZaSortiranje() {
-        return "pacijent.idPacijent";
+        return "idPacijent"; 
     }
     
     

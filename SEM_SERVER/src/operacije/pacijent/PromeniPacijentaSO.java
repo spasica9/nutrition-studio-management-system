@@ -18,7 +18,7 @@ public class PromeniPacijentaSO extends ApstraktnaGenerickaOperacija {
     protected void preduslovi(Object param) throws Exception {
         if (param == null || !(param instanceof Pacijent)) {
 
-            throw new Exception("Sistem ne može da kreira pacijenta");
+            throw new Exception("Sistem ne može da zapamti pacijenta");
         }
 
     }

@@ -49,7 +49,7 @@ public class ObradaKlijentskihZahteva extends Thread {
                 Zahtev zahtev = (Zahtev) primalac.primi();
                 Odgovor odgovor = new Odgovor();
                 switch(zahtev.getOperacija()){
-                    case LOGIN:
+                    case PRIJAVA:
                         Nutricionista n = (Nutricionista) zahtev.getParametar();
                         n = Kontroler.getInstance().login(n);
                         odgovor.setOdgovor(n);
@@ -64,7 +64,7 @@ public class ObradaKlijentskihZahteva extends Thread {
 //                            odgovor.setOdgovor(excp);
 //                        }
                         break;
-                    case UCITAJ_PACIJENTE:
+                    case VRATI_LISTU_PACIJENATA:
                         List<Pacijent> pacijenti = Kontroler.getInstance().ucitajPacijente();
                         odgovor.setOdgovor(pacijenti);
                         break;
@@ -80,11 +80,11 @@ public class ObradaKlijentskihZahteva extends Thread {
                             odgovor.setOdgovor(ex);
                         }
                         break;
-                    case UCITAJ_MESTA:
+                    case VRATI_LISTU_MESTA:
                         List<Mesto> mesta = Kontroler.getInstance().ucitajMesta();
                         odgovor.setOdgovor(mesta);
                         break;
-                    case DODAJ_PACIJENTA:
+                    case ZAPAMTI_PACIJENTA:
                         Pacijent pacijent = (Pacijent) zahtev.getParametar();
                         try {
                             Kontroler.getInstance().dodajPacijenta(pacijent);
@@ -99,7 +99,7 @@ public class ObradaKlijentskihZahteva extends Thread {
                         }
 
                         break;
-                    case AZURIRAJ_PACIJENTA:
+                    case PROMENI_PACIJENTA:
                         Pacijent aPacijent = (Pacijent) zahtev.getParametar();
                         try {
                             Kontroler.getInstance().azurirajPacijenta(aPacijent);
@@ -122,19 +122,19 @@ public class ObradaKlijentskihZahteva extends Thread {
                         System.out.println("KLASA OKZ: " + stavke);
                         odgovor.setOdgovor(stavke);
                         break;
-                    case UCITAJ_NUTRICIONISTE:
+                    case VRATI_LISTU_NUTRICIONISTA:
                         List<Nutricionista> nutricioniste = Kontroler.getInstance().ucitajNutricioniste();
                         odgovor.setOdgovor(nutricioniste);
                         break;
-                    case UCITAJ_JELA:
+                    case VRATI_LISTU_JELA:
                         List<Jelo> jela = Kontroler.getInstance().ucitajJela();
                         odgovor.setOdgovor(jela);
                         break;  
-                    case DODAJ_PLAN_ISHRANE:
+                    case ZAPAMTI_PLAN_ISHRANE:
                         PlanIshrane planIshrane = (PlanIshrane) zahtev.getParametar();
                         Kontroler.getInstance().dodajPlanIshrane(planIshrane);
                         break; 
-                     case DODAJ_SERTIFIKAT:
+                     case ZAPAMTI_SERTIFIKAT:
                          Sertifikat sertifikat = (Sertifikat) zahtev.getParametar();
                         try {
                             Kontroler.getInstance().dodajSertifikat(sertifikat);
@@ -153,7 +153,7 @@ public class ObradaKlijentskihZahteva extends Thread {
                           List<PlanIshrane> planoviIshraneUlogovanog = Kontroler.getInstance().ucitajPlanoveIshraneUlogovanog(ulogovani);  
                           odgovor.setOdgovor(planoviIshraneUlogovanog);
                           break;
-                       case IZMENI_PLAN_ISHRANE:
+                       case PROMENI_PLAN_ISHRANE:
                             try {
                                 PlanIshrane planIshrane1 = (PlanIshrane) zahtev.getParametar();
                                 Kontroler.getInstance().izmeniPlanIshrane(planIshrane1);
@@ -163,7 +163,16 @@ public class ObradaKlijentskihZahteva extends Thread {
                                 odgovor.setOdgovor(ex); 
                             }
                             break;
-
+                       case UCITAJ_PACIJENTA:
+                          Pacijent pacijent1 = (Pacijent) zahtev.getParametar();
+                          Pacijent ucitaniPacijent = Kontroler.getInstance().ucitajPacijenta(pacijent1);  
+                          odgovor.setOdgovor(ucitaniPacijent);
+                          break;
+                       case PRONADJI_PACIJENTE:
+                           Pacijent pacijent2 = (Pacijent) zahtev.getParametar();
+                           List<Pacijent> pacijentiImePrezime = Kontroler.getInstance().pronadjiPacijentePoImenuPrezimenu(pacijent2);  
+                           odgovor.setOdgovor(pacijentiImePrezime);
+                           break;
                     default: System.out.println("Greska! Operacija nepostojeca");
                 }
              posiljalac.posalji(odgovor);

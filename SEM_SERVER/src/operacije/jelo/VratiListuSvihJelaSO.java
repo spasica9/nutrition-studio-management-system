@@ -12,7 +12,7 @@ import operacije.ApstraktnaGenerickaOperacija;
  *
  * @author anas
  */
-public class UcitajJelaSO extends ApstraktnaGenerickaOperacija {
+public class VratiListuSvihJelaSO extends ApstraktnaGenerickaOperacija {
 
      List<Jelo> jela;
 

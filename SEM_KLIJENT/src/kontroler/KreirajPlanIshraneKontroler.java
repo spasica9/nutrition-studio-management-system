@@ -5,13 +5,17 @@
 package kontroler;
 
 
+import domen.Dan;
+import domen.Jelo;
 import domen.Nutricionista;
 import domen.Pacijent;
 import domen.PlanIshrane;
 import domen.StatusStavke;
 import domen.StavkaPlanaIshrane;
+import domen.VremeObroka;
 import forme.FormaMod;
 import forme.KreirajPlanIshraneForma;
+import forme.modeli.ModelTabeleJelo;
 import forme.modeli.ModelTabeleStavkaPlanaIshrane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +61,18 @@ public class KreirajPlanIshraneKontroler {
     for (Pacijent p : pacijenti) {
         kpif.getCmbPacijent().addItem(p);
     }
+    List<Jelo> jela = Komunikacija.getInstance().ucitajJela();
+    ModelTabeleJelo mtj = new ModelTabeleJelo(jela);
+    kpif.getTblJela().setModel(mtj);
+
+    kpif.getCmbDan().removeAllItems();
+    for (Dan d : Dan.values()) {
+        kpif.getCmbDan().addItem(d);
+    }
+    kpif.getCmbVreme().removeAllItems();
+    for (VremeObroka v : VremeObroka.values()) {
+        kpif.getCmbVreme().addItem(v);
+    }
 
     modForme = mod;
     kpif.getCmbNutricionista().setSelectedItem(Koordinator.getInstance().getUlogovani());
@@ -69,7 +85,7 @@ public class KreirajPlanIshraneKontroler {
             mtspi = new ModelTabeleStavkaPlanaIshrane(planIshrane.getStavke());
             trenutniRedniBroj = 1;
             kpif.getBtnIzmeni().setVisible(false);
-            kpif.getBtnObrisi().setVisible(false);
+            kpif.getBtnObrisi().setVisible(true);
         break;
     
         case IZMENI: 
@@ -124,7 +140,6 @@ public class KreirajPlanIshraneKontroler {
 
             kpif.getBtnIzmeni().setVisible(false);
             kpif.getBtnSacuvaj().setVisible(false);
-            kpif.getBtnDodaj().setVisible(false);
 
             kpif.getCmbNutricionista().setSelectedItem(planDetalji.getNutricionista());
             kpif.getCmbNutricionista().setEnabled(false);
@@ -158,90 +173,73 @@ public class KreirajPlanIshraneKontroler {
 }
    
     private void addActionListener() {
-       kpif.dodajAddActionListener(new ActionListener() {
+    kpif.obrisiAddActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int red = kpif.getTblStavke().getSelectedRow();
+        if (red == -1) {
+            JOptionPane.showMessageDialog(kpif, "Selektujte stavku u tabeli plana!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        StavkaPlanaIshrane sp = mtspi.getAktivneStavke().get(red);
+        
+        int potvrda = JOptionPane.showConfirmDialog(kpif, "Da li ste sigurni?", "POTVRDA", JOptionPane.YES_NO_OPTION);
+        if (potvrda == JOptionPane.YES_OPTION) {
+            mtspi.obrisiStavku(sp);
+            kpif.getLblIznos().setText(String.valueOf(mtspi.getUkupanIznos()));
+        }
+    }
+});
+        
+      kpif.sacuvajAddActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (kpif.getCmbPacijent().getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(kpif, "Niste izabrali pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+            try {
+                String naziv = kpif.getTfNazivPlana().getText().trim();
+                String cenaStr = kpif.getTfCenaPlana().getText().trim();
 
-            do {
-                Koordinator.getInstance().otvoriDodajStavkuFormu(kpif);
-
-                pripremiFormuStavke(); 
-
-                ModelTabeleStavkaPlanaIshrane model = (ModelTabeleStavkaPlanaIshrane) kpif.getTblStavke().getModel();
-                double noviIznos = model.getUkupanIznos();
-                kpif.getLblIznos().setText(String.valueOf(noviIznos));
-                kpif.getPlanIshrane().setUkupanIznosJela(noviIznos);
-
-            } while (JOptionPane.showConfirmDialog(null, "Želite li da dodate još stavki?", "POTVRDA", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
-        }
-    });
-        
-        
-        kpif.obrisiAddActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int red = kpif.getTblStavke().getSelectedRow();
-            if (red == -1) {
-                JOptionPane.showMessageDialog(kpif, "Selektujte stavku koju želite da obrišete", "GREŠKA", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int potvrda = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite da obrišete stavku?", "POTVRDA", JOptionPane.YES_NO_OPTION);
-            if (potvrda != JOptionPane.YES_OPTION) return;
-
-            ModelTabeleStavkaPlanaIshrane mts = (ModelTabeleStavkaPlanaIshrane) kpif.getTblStavke().getModel();
-            StavkaPlanaIshrane stavka = mts.getAktivneStavke().get(red); 
-
-            mts.obrisiStavku(stavka); 
-
-            double noviIznos = mts.getUkupanIznos();
-            kpif.getPlanIshrane().setUkupanIznosJela(noviIznos);
-            kpif.getLblIznos().setText(String.valueOf(noviIznos));
-        }
-    });
-        
-        kpif.sacuvajAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                double iznos = Double.parseDouble(kpif.getLblIznos().getText());
-                if(iznos <= 0){
-                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                if (naziv.isEmpty() || cenaStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Naziv ili cena nedostaju)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
-                PlanIshrane planIshrane = kpif.getPlanIshrane();
+
+                double cenaPlana = Double.parseDouble(cenaStr);
+
+                double ukupanIznosJela = mtspi.getUkupanIznos();
+
+                if (ukupanIznosJela <= 0) {
+                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Tabela je prazna)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                planIshrane.setStavke(mtspi.getLista()); 
                 planIshrane.setDatumIzrade(new Date());
                 planIshrane.setNutricionista((Nutricionista) kpif.getCmbNutricionista().getSelectedItem());
                 planIshrane.setPacijent((Pacijent) kpif.getCmbPacijent().getSelectedItem());
-                if (!kpif.getTfNazivPlana().getText().matches("[a-zA-ZšđčćžŠĐČĆŽ\\s]+")) {
-                    JOptionPane.showMessageDialog(kpif, "Naziv koji ste uneli nije odgovarajući", "GREŠKA", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                planIshrane.setNazivPlana(kpif.getTfNazivPlana().getText());
-                 
-                planIshrane.setCenaPlana(Double.parseDouble(kpif.getTfCenaPlana().getText()));
-                
-                try{
-                    komunikacija.Komunikacija.getInstance().dodajPlanIshrane(planIshrane);
-                    JOptionPane.showMessageDialog(kpif, "Sistem je zapamtio plan ishrane", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
-                    
-                    int potvrda = JOptionPane.showConfirmDialog(null, "Da li želite da kreirate novi plan ishrane?", "POTVRDA", JOptionPane.YES_NO_OPTION);
-                    if(potvrda == JOptionPane.YES_OPTION){
-                        Koordinator.getInstance().otvoriFormuDodajPlanIshrane();
-                    }
-                    kpif.dispose();
-                }catch(Exception exc){
-                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da kreira plan ishrane", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+                planIshrane.setNazivPlana(naziv);
+                planIshrane.setCenaPlana(cenaPlana);
 
-        });
-        
+                planIshrane.setUkupanIznosJela(ukupanIznosJela);
+
+                komunikacija.Komunikacija.getInstance().dodajPlanIshrane(planIshrane);
+
+                JOptionPane.showMessageDialog(kpif, "Sistem je zapamtio plan ishrane.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
+
+                int potvrda = JOptionPane.showConfirmDialog(kpif, "Da li želite da kreirate još jedan plan?", "Novi plan", JOptionPane.YES_NO_OPTION);
+                if (potvrda == JOptionPane.YES_OPTION) {
+                    Koordinator.getInstance().otvoriFormuDodajPlanIshrane();
+                }
+                kpif.dispose();
+
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Cena mora biti broj)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Greška na serveru)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    });
        kpif.izmeniAddActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -276,6 +274,87 @@ public class KreirajPlanIshraneKontroler {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane.", 
                     "GREŠKA", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+});
+       kpif.getBtnPretrazi().addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String naziv = kpif.getTfJelo().getText().trim();
+        ModelTabeleJelo mtj = (ModelTabeleJelo) kpif.getTblJela().getModel();
+        mtj.pretrazi(naziv);
+        if (mtj.getLista().isEmpty()) {
+            JOptionPane.showMessageDialog(kpif, "Sistem ne može da nađe jela po zadatom kriterijumu", "Greška", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(kpif, "Sistem je našao jela po zadatom kriterijumu.");
+        }
+    }
+});
+       kpif.getBtnIzaberi().addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int red = kpif.getTblJela().getSelectedRow();
+        if (red == -1) {
+            JOptionPane.showMessageDialog(kpif, "Morate izabrati jelo iz tabele!", "Greška", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        ModelTabeleJelo mtj = (ModelTabeleJelo) kpif.getTblJela().getModel();
+        Jelo jelo = mtj.getLista().get(red);
+
+        try {
+            double kolicina = Double.parseDouble(kpif.getTfKol().getText().trim());
+            if (kolicina <= 0) throw new NumberFormatException();
+
+            double ukupnoKcal = kolicina * jelo.getKcalNa100g();
+            double iznosStavke = kolicina * jelo.getCenaNa100g();
+
+            kpif.getTfjedKcal().setText(String.valueOf(jelo.getKcalNa100g()));
+            kpif.getTfjedCena().setText(String.valueOf(jelo.getCenaNa100g()));
+            kpif.getLblKcal().setText(String.valueOf(ukupnoKcal));
+            kpif.getLblIznos1().setText(String.valueOf(iznosStavke));
+
+        } catch (NumberFormatException exc) {
+            JOptionPane.showMessageDialog(kpif, "Količina mora biti pozitivan broj!", "Greška", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+});
+       kpif.getBtnDodaj1().addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       int redJelo = kpif.getTblJela().getSelectedRow();
+        if (redJelo == -1) {
+            JOptionPane.showMessageDialog(kpif, "Niste izabrali jelo iz tabele!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            ModelTabeleJelo mtj = (ModelTabeleJelo) kpif.getTblJela().getModel();
+            Jelo jelo = mtj.getLista().get(redJelo);
+            
+            double kolicina = Double.parseDouble(kpif.getTfKol().getText().trim());
+            if (kolicina <= 0) {
+                JOptionPane.showMessageDialog(kpif, "Količina mora biti veća od nule!");
+                return;
+            }
+
+            StavkaPlanaIshrane sp = new StavkaPlanaIshrane();
+            sp.setPlanIshrane(planIshrane);
+            sp.setJelo(jelo);
+            sp.setDan((Dan) kpif.getCmbDan().getSelectedItem());
+            sp.setVremeObroka((VremeObroka) kpif.getCmbVreme().getSelectedItem());
+            sp.setKolicina(kolicina);
+            sp.setJedKcal(jelo.getKcalNa100g());
+            sp.setJedCena(jelo.getCenaNa100g());
+            sp.setUkupnoKcal(kolicina * jelo.getKcalNa100g());
+            sp.setIznos(kolicina * jelo.getCenaNa100g());
+
+            mtspi.dodaj(sp);
+
+            kpif.getLblIznos().setText(String.valueOf(mtspi.getUkupanIznos()));
+
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(kpif, "Neispravan unos količine!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
         }
     }
 });

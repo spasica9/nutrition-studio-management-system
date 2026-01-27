@@ -12,7 +12,7 @@ import operacije.ApstraktnaGenerickaOperacija;
  *
  * @author anas
  */
-public class VratiListuSviPacijentSO extends ApstraktnaGenerickaOperacija {
+public class VratiListuSvihPacijenataSO extends ApstraktnaGenerickaOperacija {
 
     List<Pacijent> pacijenti;
 

@@ -12,19 +12,21 @@ import domen.PlanIshrane;
 import domen.Sertifikat;
 import domen.StavkaPlanaIshrane;
 import java.util.List;
-import operacije.jelo.UcitajJelaSO;
+import operacije.jelo.VratiListuSvihJelaSO;
 import operacije.nutricionista.PrijavaOperacija;
-import operacije.mesto.UcitajMestaSO;
-import operacije.nutricionista.UcitajNutricionisteSO;
-import operacije.pacijent.KreirajPacijentaSO;
+import operacije.mesto.VratiListuSvihMestaSO;
+import operacije.nutricionista.VratiListuSvihNutricionistaSO;
+import operacije.pacijent.ZapamtiPacijentaSO;
 import operacije.pacijent.PromeniPacijentaSO;
 import operacije.pacijent.ObrisiPacijentaSO;
-import operacije.pacijent.VratiListuSviPacijentSO;
-import operacije.plan_ishrane.KreirajPlanIshraneSO;
+import operacije.pacijent.PronadjiPacijenteSO;
+import operacije.pacijent.UcitajPacijentaSO;
+import operacije.pacijent.VratiListuSvihPacijenataSO;
+import operacije.plan_ishrane.ZapamtiPlanIshraneSO;
 import operacije.plan_ishrane.PromeniPlanIshraneSO;
 import operacije.plan_ishrane.VratiListuSviPlanIshraneSO;
 import operacije.plan_ishrane.VratiListuPlanIshraneSO;
-import operacije.sertifikat.UbaciSertifikatSO;
+import operacije.sertifikat.ZapamtiSertifikatSO;
 import operacije.stavka_plana_ishrane.UcitajStavkePlanaIshraneSO;
 
 /**
@@ -56,7 +58,7 @@ public class Kontroler {
     }
 
     public List<Pacijent> ucitajPacijente() throws Exception {
-        VratiListuSviPacijentSO operacija = new VratiListuSviPacijentSO();
+        VratiListuSvihPacijenataSO operacija = new VratiListuSvihPacijenataSO();
         operacija.izvrsi(new Pacijent(), null);
         System.out.println("KLASA Kontroler: " + operacija.getPacijenti());
         return operacija.getPacijenti();
@@ -68,14 +70,14 @@ public class Kontroler {
     }
 
     public List<Mesto> ucitajMesta() throws Exception {
-        UcitajMestaSO operacija = new UcitajMestaSO();
+        VratiListuSvihMestaSO operacija = new VratiListuSvihMestaSO();
         operacija.izvrsi(new Mesto(), null);
         System.out.println("KLASA Kontroler: " + operacija.getMesta());
         return operacija.getMesta();
     }
 
     public void dodajPacijenta(Pacijent p) throws Exception {
-       KreirajPacijentaSO  operacija = new KreirajPacijentaSO();
+       ZapamtiPacijentaSO  operacija = new ZapamtiPacijentaSO();
         operacija.izvrsi(p, null);
     }
 
@@ -98,26 +100,26 @@ public class Kontroler {
     }
 
     public List<Nutricionista> ucitajNutricioniste() throws Exception {
-        UcitajNutricionisteSO operacija = new UcitajNutricionisteSO();
+        VratiListuSvihNutricionistaSO operacija = new VratiListuSvihNutricionistaSO();
         operacija.izvrsi(new Nutricionista(), null);
         System.out.println("KLASA Kontroler: " + operacija.getNutricioniste());
         return operacija.getNutricioniste();
     }
 
     public List<Jelo> ucitajJela() throws Exception {
-        UcitajJelaSO operacija = new UcitajJelaSO();
+        VratiListuSvihJelaSO operacija = new VratiListuSvihJelaSO();
         operacija.izvrsi(new Jelo(), null);
         System.out.println("KLASA Kontroler: " + operacija.getJela());
         return operacija.getJela();
     }
 
     public void dodajPlanIshrane(PlanIshrane planIshrane) throws Exception {
-        KreirajPlanIshraneSO  operacija = new KreirajPlanIshraneSO();
+        ZapamtiPlanIshraneSO  operacija = new ZapamtiPlanIshraneSO();
         operacija.izvrsi(planIshrane, null);
     }
 
     public void dodajSertifikat(Sertifikat s) throws Exception {
-        UbaciSertifikatSO operacija = new UbaciSertifikatSO();
+        ZapamtiSertifikatSO operacija = new ZapamtiSertifikatSO();
         operacija.izvrsi(s, null);
     }
 
@@ -130,6 +132,18 @@ public class Kontroler {
     public void izmeniPlanIshrane(PlanIshrane planIshrane1) throws Exception {
         PromeniPlanIshraneSO operacija = new PromeniPlanIshraneSO();
         operacija.izvrsi(planIshrane1, null);
+    }
+
+    public Pacijent ucitajPacijenta(Pacijent pacijent) throws Exception {
+        UcitajPacijentaSO operacija = new UcitajPacijentaSO();
+        operacija.izvrsi(pacijent, null);
+        return operacija.getUcitani();
+    }
+
+    public List<Pacijent> pronadjiPacijentePoImenuPrezimenu(Pacijent pacijent2) throws Exception {
+        PronadjiPacijenteSO operacija = new PronadjiPacijenteSO();
+        operacija.izvrsi(pacijent2, null);
+        return operacija.getLista();
     }
     
 }

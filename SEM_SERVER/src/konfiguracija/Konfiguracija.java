@@ -24,7 +24,7 @@ public class Konfiguracija {
     public Konfiguracija() throws IOException {
         konfiguracija = new Properties();
         try {
-            konfiguracija.load(new FileInputStream("D:\\PS vezbe\\SEM_SERVER\\config\\config.properties"));
+            konfiguracija.load(new FileInputStream("D:\\projekti\\PS\\SEM_SERVER\\config\\config.properties"));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }

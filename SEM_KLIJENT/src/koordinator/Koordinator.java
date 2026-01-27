@@ -78,9 +78,9 @@ public class Koordinator {
     }
 
     public void otvoriFormuPrikazPacijenata() {
-        prikazPKontroler = new PrikazPacijenataKontroler(new PrikazPacijenataForma());
-        prikazPKontroler.otvoriFormu();
-    }
+    prikazPKontroler = new PrikazPacijenataKontroler(new PrikazPacijenataForma());
+    prikazPKontroler.otvoriFormu();
+}
 
     public void otvoriFormuDodajPacijenta() {
         dodajPKontroler = new KreirajPacijentaKontroler(new KreirajPacijentaForma());

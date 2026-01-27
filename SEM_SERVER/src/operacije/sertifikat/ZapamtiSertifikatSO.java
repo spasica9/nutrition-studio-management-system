@@ -12,7 +12,7 @@ import operacije.ApstraktnaGenerickaOperacija;
  *
  * @author anas
  */
-public class UbaciSertifikatSO extends ApstraktnaGenerickaOperacija {
+public class ZapamtiSertifikatSO extends ApstraktnaGenerickaOperacija {
 
      @Override
     protected void preduslovi(Object param) throws Exception {

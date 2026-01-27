@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package operacije.mesto;
+package operacije.nutricionista;
 
 import domen.Mesto;
-import domen.Pacijent;
+import domen.Nutricionista;
 import java.util.List;
 import operacije.ApstraktnaGenerickaOperacija;
 
@@ -13,12 +13,12 @@ import operacije.ApstraktnaGenerickaOperacija;
  *
  * @author anas
  */
-public class UcitajMestaSO extends ApstraktnaGenerickaOperacija {
-    
-    List<Mesto> mesta;
+public class VratiListuSvihNutricionistaSO extends ApstraktnaGenerickaOperacija {
 
-    public List<Mesto> getMesta() {
-        return mesta;
+    List<Nutricionista> nutricioniste;
+
+    public List<Nutricionista> getNutricioniste() {
+        return nutricioniste;
     }
     
 
@@ -28,8 +28,7 @@ public class UcitajMestaSO extends ApstraktnaGenerickaOperacija {
 
     @Override
     protected void izvrsiOperaciju(Object param, String kljuc) throws Exception {
-        mesta = broker.getAll((Mesto)param,null);
+        nutricioniste = broker.getAll((Nutricionista)param,null);
     }
-    
     
 }

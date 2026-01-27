@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,68 +66,88 @@ public class PrikazPacijenataKontroler {
         ppf.addBtnObrisiActionListener (new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               int red = ppf.getTblPacijenti().getSelectedRow();
-               if (red==-1) {
-                   JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
-               }
-               else {
-                   ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
-                   Pacijent p = mtp.getLista().get(red);
-                   try{
-                      Komunikacija.getInstance().obrisiPacijenta(p);
-                      JOptionPane.showMessageDialog(ppf, "Sistem je obrisao pacijenta.", "USPEH", JOptionPane.INFORMATION_MESSAGE);
-                      pripremiFormu();
-                   }catch(Exception ex) {
-                      JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
-                   }
-                   
-               }
+            
+                int red = ppf.getTblPacijenti().getSelectedRow();
+
+                if (red == -1) {
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
+                Pacijent p = mtp.getLista().get(red);
+                int potvrda = JOptionPane.showConfirmDialog(ppf, "Da li ste sigurni da želite da obrišete pacijenta: " + p.getIme() + " " + p.getPrezime() + "?", "Potvrda brisanja", JOptionPane.YES_NO_OPTION);
+
+                if (potvrda == JOptionPane.YES_OPTION) {
+                    try {
+                        Komunikacija.getInstance().obrisiPacijenta(p);
+                        JOptionPane.showMessageDialog(ppf, "Sistem je obrisao pacijenta.", "USPEH", JOptionPane.INFORMATION_MESSAGE);
+
+                        Pacijent kriterijum = new Pacijent();
+                        kriterijum.setIme(ppf.getTfIme().getText().trim());
+                        kriterijum.setPrezime(ppf.getTfPrezime().getText().trim());
+                        kriterijum.setMesto((Mesto) ppf.getCmbMesto().getSelectedItem());
+                        kriterijum.setTipIshrane((TipIshrane) ppf.getCmbTip().getSelectedItem());
+
+                        List<Pacijent> rezultati = Komunikacija.getInstance().pronadjiPacijente(kriterijum);
+
+                        if (rezultati == null) rezultati = new ArrayList<>();
+                        ppf.getTblPacijenti().setModel(new ModelTabelePacijent(rezultati));
+
+                    } catch (Exception ex) {
+                        
+                        JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše pacijenta: " + ex.getMessage(), "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
         ppf.addBtnAzurirajActionListener (new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               int red = ppf.getTblPacijenti().getSelectedRow();
-               if (red==-1) {
-                   JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
-               }
-               else {
-                   JOptionPane.showMessageDialog(ppf, "Sistem je našao pacijenta.", "USPEH", JOptionPane.INFORMATION_MESSAGE);
-                   ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
-                   Pacijent p = mtp.getLista().get(red);
-                   koordinator.Koordinator.getInstance().dodajParam("pacijent", p);
-                   koordinator.Koordinator.getInstance().otvoriFormuIzmeniPacijenta();
-                   
-               }
-            }
+                int red = ppf.getTblPacijenti().getSelectedRow();
+                if (red == -1) {
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da učita pacijenta. Niste izabrali red.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
+                Pacijent p = mtp.getLista().get(red);
+
+                try {
+                    Pacijent ucitaniPacijent = Komunikacija.getInstance().ucitajPacijenta(p);
+                    JOptionPane.showMessageDialog(ppf, "Sistem je učitao pacijenta.", "USPEH", JOptionPane.INFORMATION_MESSAGE);
+
+                    koordinator.Koordinator.getInstance().dodajParam("pacijent", ucitaniPacijent);
+                    koordinator.Koordinator.getInstance().otvoriFormuIzmeniPacijenta();
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da učita pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                }
+    }
         });
         ppf.addBtnPretraziActionListener (new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               String ime = ppf.getTfIme().getText().trim();
-                String prezime = ppf.getTfPrezime().getText().trim();
-                String datum = ppf.getTfDatum().getText().trim();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                sdf.setLenient(false);
-                Date datumRodjenja = null;
-                try {
-                     datumRodjenja = sdf.parse(datum);
-                } catch (ParseException ex) {
-                    System.out.println("Nevalidan datum");
-                }
-                String email = ppf.getTfEmail().getText().trim();
-                TipIshrane tipIshrane = (TipIshrane) ppf.getCmbTip().getSelectedItem();
-                Mesto mesto = (Mesto) ppf.getCmbMesto().getSelectedItem();
-            
-                ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
-                mtp.pretrazi(ime, prezime, datumRodjenja, email, tipIshrane, mesto);
-                 if (mtp.getLista().isEmpty()) {
-                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe pacijente po zadatim kriterijumima", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
-                    pripremiFormu();
-                } else {
-                    JOptionPane.showMessageDialog(ppf, "Sistem je našao pacijente po zadatim kriterijumima", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
-                    
-                }
+               Pacijent p = new Pacijent();
+               p.setIme(ppf.getTfIme().getText().trim());
+               p.setPrezime(ppf.getTfPrezime().getText().trim());
+               p.setMesto((Mesto) ppf.getCmbMesto().getSelectedItem());
+               p.setTipIshrane((TipIshrane) ppf.getCmbTip().getSelectedItem());
+
+               try {
+                   List<Pacijent> rezultati = Komunikacija.getInstance().pronadjiPacijente(p);
+
+                   if (rezultati == null || rezultati.isEmpty()) {
+                       JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe pacijente po zadatim kriterijumima.", "Greška", JOptionPane.INFORMATION_MESSAGE);
+                       ppf.getTblPacijenti().setModel(new ModelTabelePacijent(new ArrayList<>()));
+                   } else {
+                       ModelTabelePacijent mtp = new ModelTabelePacijent(rezultati);
+                       ppf.getTblPacijenti().setModel(mtp);
+                       JOptionPane.showMessageDialog(ppf, "Sistem je našao pacijente po zadatim kriterijumima.", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+                   }
+               } catch (Exception ex) {
+                   JOptionPane.showMessageDialog(ppf, "Greška prilikom komunikacije sa serverom: " + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
+               }
             }
         });
         ppf.addBtnResetujActionListener (new ActionListener() {
@@ -137,23 +158,28 @@ public class PrikazPacijenataKontroler {
         });
         ppf.addBtnDetaljiActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int red = ppf.getTblPacijenti().getSelectedRow();
-                if(red==-1){
-                JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe pacijenta.", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
-                }else{
-                    
-                        JOptionPane.showMessageDialog(ppf, "Sistem je našao pacijenta.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
-                        ModelTabelePacijent mtp  = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
-                        Pacijent p = mtp.getLista().get(red);
-                        Koordinator.getInstance().dodajParam("pacijent", p);
-                    try {
-                        Koordinator.getInstance().otvoriDetaljiPacijentaFormu();
-                    } catch (Exception ex) {
-                        Logger.getLogger(PrikazPlanovaIshraneKontroler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+          public void actionPerformed(ActionEvent e) {
+            int red = ppf.getTblPacijenti().getSelectedRow();
+            if (red == -1) {
+                JOptionPane.showMessageDialog(ppf, "Sistem ne može da učita pacijenta.", "Greška", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
+            Pacijent selektovani = mtp.getLista().get(red);
+
+            try {
+                Pacijent ucitani = Komunikacija.getInstance().ucitajPacijenta(selektovani);
+
+                JOptionPane.showMessageDialog(ppf, "Sistem je učitao pacijenta.", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+
+                Koordinator.getInstance().dodajParam("pacijent", ucitani);
+                Koordinator.getInstance().otvoriDetaljiPacijentaFormu();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(ppf, "Sistem ne može da učita pacijenta.", "Greška", JOptionPane.ERROR_MESSAGE);
             }
+        }
         });
 
         
