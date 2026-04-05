@@ -22,12 +22,47 @@ public class ZapamtiPlanIshraneSO extends ApstraktnaGenerickaOperacija {
         if (param == null || !(param instanceof PlanIshrane)) {
             throw new Exception("Sistem ne može da kreira plan ishrane.");
         }
+        
+        PlanIshrane plan = (PlanIshrane) param;
+
+        if (plan.getDatumIzrade() == null) {
+            throw new Exception("Datum izrade plana je obavezan.");
+        }
+        if (plan.getPacijent() == null) {
+            throw new Exception("Plan ishrane mora biti vezan za pacijenta.");
+        }
+        if (plan.getNutricionista() == null) {
+            throw new Exception("Plan ishrane mora imati dodeljenog nutricionistu.");
+        }
+        if (plan.getUkupanIznosJela() < 0) {
+            throw new Exception("Ukupan iznos plana ne može biti negativan.");
+        }
+
+        if (plan.getStavke() == null || plan.getStavke().isEmpty()) {
+            throw new Exception("Plan ishrane mora imati barem jednu stavku.");
+        }
+
+        for (StavkaPlanaIshrane sp : plan.getStavke()) {
+
+            if (sp.getJelo() == null) {
+                throw new Exception("Svaka stavka plana mora imati izabrano jelo.");
+            }
+            if (sp.getKolicina() <= 0) {
+                throw new Exception("Količina u stavkama mora biti veća od nule.");
+            }
+            if (sp.getDan() == null) {
+                throw new Exception("Svaka stavka mora imati definisan dan.");
+            }
+            if (sp.getVremeObroka() == null) {
+                throw new Exception("Svaka stavka mora imati definisano vreme obroka.");
+            }
+        }
     }
 
     @Override
     protected void izvrsiOperaciju(Object param, String kljuc) throws Exception {
         PlanIshrane planIshrane = (PlanIshrane) param;
-        System.out.println("DEBUG: Iznos plana koji je stigao: " + planIshrane.getUkupanIznosJela());
+        System.out.println("Iznos plana koji je stigao: " + planIshrane.getUkupanIznosJela());
         PreparedStatement ps = broker.add(param);
         ResultSet rs = ps.getGeneratedKeys();
         rs.next();

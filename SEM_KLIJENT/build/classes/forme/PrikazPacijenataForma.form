@@ -129,12 +129,12 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnObrisi">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Obrisi"/>
+        <Property name="text" type="java.lang.String" value="Obri&#x161;i"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnAzuriraj">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Azuriraj"/>
+        <Property name="text" type="java.lang.String" value="Izmeni"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAzurirajActionPerformed"/>
@@ -186,7 +186,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnPretrazi">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Pretrazi"/>
+        <Property name="text" type="java.lang.String" value="Pretra&#x17e;i"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPretraziActionPerformed"/>

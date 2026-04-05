@@ -25,7 +25,7 @@ public class GlavnaForma extends javax.swing.JFrame {
      */
     public GlavnaForma() {
         initComponents();
-        ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("Pozadina.png"));
+        ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("/images/Pozadina.png"));
         JLabel lblBackground = new JLabel(backgroundIcon);
         getLayeredPane().add(lblBackground, Integer.valueOf(Integer.MIN_VALUE));
         lblBackground.setBounds(0, 0, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
@@ -145,7 +145,7 @@ public class GlavnaForma extends javax.swing.JFrame {
 
         jMenu2.setText("Sertifikat");
 
-        jMenuItem3.setText("Ubaci");
+        jMenuItem3.setText("Dodaj");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);

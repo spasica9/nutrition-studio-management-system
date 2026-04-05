@@ -99,9 +99,9 @@ public class PrikazPacijenataForma extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblPacijenti);
 
-        btnObrisi.setText("Obrisi");
+        btnObrisi.setText("Obriši");
 
-        btnAzuriraj.setText("Azuriraj");
+        btnAzuriraj.setText("Izmeni");
         btnAzuriraj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAzurirajActionPerformed(evt);
@@ -116,7 +116,7 @@ public class PrikazPacijenataForma extends javax.swing.JFrame {
 
         jLabel7.setText("Mesto:");
 
-        btnPretrazi.setText("Pretrazi");
+        btnPretrazi.setText("Pretraži");
         btnPretrazi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPretraziActionPerformed(evt);

@@ -112,7 +112,7 @@ public class KreirajPacijentaForma extends javax.swing.JFrame {
 
         btnDodaj.setText("Dodaj");
 
-        btnAzuriraj.setText("Ažuriraj");
+        btnAzuriraj.setText("Izmeni");
 
         jLabel1.setText("ID:");
 

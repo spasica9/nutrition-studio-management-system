@@ -5,7 +5,13 @@
         <group>
             <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/komunikacija/Operacija.java</file>
             <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/VremeObroka.java</file>
+            <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/Jelo.java</file>
+            <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/PlanIshrane.java</file>
+            <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/Pacijent.java</file>
+            <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/StatusStavke.java</file>
             <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/StavkaPlanaIshrane.java</file>
+            <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/Nutricionista.java</file>
+            <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/ApstraktniDomenskiObjekat.java</file>
             <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/TipIshrane.java</file>
             <file>file:/D:/projekti/PS/SEM_ZAJEDNICKI/src/domen/Dan.java</file>
         </group>

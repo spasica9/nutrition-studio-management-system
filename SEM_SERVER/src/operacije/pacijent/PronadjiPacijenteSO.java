@@ -20,7 +20,7 @@ public class PronadjiPacijenteSO extends ApstraktnaGenerickaOperacija {
 
     @Override
     protected void preduslovi(Object param) throws Exception {
-           if (param == null || !(param instanceof Pacijent)) { // Promijeni String u Pacijent
+           if (param == null || !(param instanceof Pacijent)) {
         throw new Exception("Sistem ne može da pronađe pacijente (neispravan parametar).");
     }
     }

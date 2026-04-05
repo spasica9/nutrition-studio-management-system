@@ -19,11 +19,22 @@ public class ObrisiPacijentaSO extends ApstraktnaGenerickaOperacija {
         if (param==null || !(param instanceof Pacijent)) {
             throw new PacijentNeMozeDaSeObriseException ("Sistem ne može da nađe pacijenta.");
         }
+        
+       Pacijent p = (Pacijent) param;
+
+        if (p.getIdPacijent() <= 0) {
+            throw new PacijentNeMozeDaSeObriseException("Sistem ne može da identifikuje pacijenta.");
+        }
     }
 
     @Override
     protected void izvrsiOperaciju(Object param, String kljuc) throws Exception {
         broker.delete((Pacijent)param);
+        
+        Pacijent p = (Pacijent) param;
+        if (p.getIdPacijent() <= 0) {
+        throw new Exception("Sistem ne može da obriše pacijenta.");
+        }
     }
     
 }

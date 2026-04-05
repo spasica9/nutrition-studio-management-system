@@ -4,7 +4,9 @@
  */
 package operacije.pacijent;
 
+import domen.ApstraktniDomenskiObjekat;
 import domen.Pacijent;
+import java.util.ArrayList;
 import java.util.List;
 import operacije.ApstraktnaGenerickaOperacija;
 
@@ -29,7 +31,11 @@ public class VratiListuSvihPacijenataSO extends ApstraktnaGenerickaOperacija {
     @Override
     protected void izvrsiOperaciju(Object param, String kljuc) throws Exception {
         String uslov = " JOIN mesto ON pacijent.mesto = mesto.idMesto";
-        pacijenti = broker.getAll((Pacijent)param,uslov);
+        List<ApstraktniDomenskiObjekat> lista = broker.getAll((Pacijent)param, uslov);
+        pacijenti = new ArrayList<>();
+        for (ApstraktniDomenskiObjekat ado : lista) {
+            pacijenti.add((Pacijent) ado);
+        }
     }
     
 }

@@ -95,22 +95,16 @@ public class ModelTabeleStavkaPlanaIshrane extends AbstractTableModel {
         }
     }
 
-    if (!postoji) {
-        lista.add(sp);
-    }
-
-
-    int rb = 1;
-    for (StavkaPlanaIshrane s : lista) {
-        if (s.getStatus() != StatusStavke.OBRISANA) {
-            s.setRb(rb++);
-            if (s.getStatus() == null) {
-                s.setStatus(StatusStavke.NOVA);
+        if (!postoji) {
+            int maxRb = 0;
+            for (StavkaPlanaIshrane s : lista) {
+                if (s.getRb() > maxRb) maxRb = s.getRb();
             }
+            sp.setRb(maxRb + 1);
+            sp.setStatus(StatusStavke.NOVA);
+            lista.add(sp);
         }
-    }
-
-    fireTableDataChanged();
+        fireTableDataChanged();
 }
     public void izmeniKolicinu(int rowIndex, int novaKolicina) {
         StavkaPlanaIshrane sp = getAktivneStavke().get(rowIndex);
@@ -135,10 +129,14 @@ public class ModelTabeleStavkaPlanaIshrane extends AbstractTableModel {
     fireTableDataChanged();
     }
     
-   public void obrisiStavku(StavkaPlanaIshrane sp) {
-    sp.setStatus(StatusStavke.OBRISANA);
-    reindeksirajRb();
-}
+    public void obrisiStavku(StavkaPlanaIshrane sp) {
+      if (sp.getStatus() == StatusStavke.NOVA) {
+          lista.remove(sp);
+      } else {
+          sp.setStatus(StatusStavke.OBRISANA);
+      }
+      fireTableDataChanged();
+  }
     public void setLista(List<StavkaPlanaIshrane> lista) {
         this.lista = lista;
         fireTableDataChanged();

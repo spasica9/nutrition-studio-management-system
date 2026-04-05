@@ -13,7 +13,7 @@ import domen.Sertifikat;
 import domen.StavkaPlanaIshrane;
 import java.util.List;
 import operacije.jelo.VratiListuSvihJelaSO;
-import operacije.nutricionista.PrijavaOperacija;
+import operacije.nutricionista.PrijaviNutricionistaSO;
 import operacije.mesto.VratiListuSvihMestaSO;
 import operacije.nutricionista.VratiListuSvihNutricionistaSO;
 import operacije.pacijent.ZapamtiPacijentaSO;
@@ -24,10 +24,10 @@ import operacije.pacijent.UcitajPacijentaSO;
 import operacije.pacijent.VratiListuSvihPacijenataSO;
 import operacije.plan_ishrane.ZapamtiPlanIshraneSO;
 import operacije.plan_ishrane.PromeniPlanIshraneSO;
-import operacije.plan_ishrane.VratiListuSviPlanIshraneSO;
-import operacije.plan_ishrane.VratiListuPlanIshraneSO;
+import operacije.plan_ishrane.PronadjiPlanoveIshraneSO;
+import operacije.plan_ishrane.UcitajPlanIshraneSO;
+import operacije.plan_ishrane.VratiListuSvihPlanovaIshraneSO;
 import operacije.sertifikat.ZapamtiSertifikatSO;
-import operacije.stavka_plana_ishrane.UcitajStavkePlanaIshraneSO;
 
 /**
  *
@@ -50,7 +50,7 @@ public class Kontroler {
 
     public Nutricionista login(Nutricionista n) throws Exception {
         
-        PrijavaOperacija operacija = new PrijavaOperacija();
+        PrijaviNutricionistaSO operacija = new PrijaviNutricionistaSO();
         operacija.izvrsi(n, null);
         System.out.println("KLASA Kontroler: " + operacija.getNutricionista());
         return operacija.getNutricionista();
@@ -87,17 +87,12 @@ public class Kontroler {
     }
 
     public List<PlanIshrane> ucitajPlanoveIshrane() throws Exception {
-        VratiListuSviPlanIshraneSO operacija = new VratiListuSviPlanIshraneSO();
+        VratiListuSvihPlanovaIshraneSO operacija = new VratiListuSvihPlanovaIshraneSO();
         operacija.izvrsi(new PlanIshrane(), null);
         System.out.println("KLASA Kontroler: " + operacija.getPlanovi());
         return operacija.getPlanovi();
     }
 
-    public List<StavkaPlanaIshrane> ucitajStavke(int id) throws Exception {
-        UcitajStavkePlanaIshraneSO operacija = new UcitajStavkePlanaIshraneSO();
-        operacija.izvrsi(id, null);
-        return operacija.getStavke();
-    }
 
     public List<Nutricionista> ucitajNutricioniste() throws Exception {
         VratiListuSvihNutricionistaSO operacija = new VratiListuSvihNutricionistaSO();
@@ -124,9 +119,9 @@ public class Kontroler {
     }
 
     public List<PlanIshrane> ucitajPlanoveIshraneUlogovanog(Nutricionista ulogovani) throws Exception {
-        VratiListuPlanIshraneSO operacija = new VratiListuPlanIshraneSO();
+        VratiListuSvihPlanovaIshraneSO operacija = new VratiListuSvihPlanovaIshraneSO();
         operacija.izvrsi(ulogovani, null);
-        return operacija.getLista();
+        return operacija.getPlanovi();
     }
 
     public void izmeniPlanIshrane(PlanIshrane planIshrane1) throws Exception {
@@ -140,9 +135,21 @@ public class Kontroler {
         return operacija.getUcitani();
     }
 
-    public List<Pacijent> pronadjiPacijentePoImenuPrezimenu(Pacijent pacijent2) throws Exception {
+    public List<Pacijent> pronadjiPacijente(Pacijent pacijent2) throws Exception {
         PronadjiPacijenteSO operacija = new PronadjiPacijenteSO();
         operacija.izvrsi(pacijent2, null);
+        return operacija.getLista();
+    }
+
+    public PlanIshrane ucitajPlanIshrane(PlanIshrane plan1) throws Exception {
+        UcitajPlanIshraneSO operacija = new UcitajPlanIshraneSO();
+        operacija.izvrsi(plan1, null);
+        return operacija.getUcitaniPlan();
+    }
+
+    public List<PlanIshrane> pronadjiPlanove(PlanIshrane plan2) throws Exception {
+        PronadjiPlanoveIshraneSO operacija = new PronadjiPlanoveIshraneSO();
+        operacija.izvrsi(plan2, null);
         return operacija.getLista();
     }
     

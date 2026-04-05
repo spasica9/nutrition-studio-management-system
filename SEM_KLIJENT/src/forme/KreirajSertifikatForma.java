@@ -12,12 +12,12 @@ import javax.swing.JTextField;
  *
  * @author anas
  */
-public class UbaciSertifikatForma extends javax.swing.JFrame {
+public class KreirajSertifikatForma extends javax.swing.JFrame {
 
     /**
      * Creates new form UbaciSertifikatForma
      */
-    public UbaciSertifikatForma() {
+    public KreirajSertifikatForma() {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

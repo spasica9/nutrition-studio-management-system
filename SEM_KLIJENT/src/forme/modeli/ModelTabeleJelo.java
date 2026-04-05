@@ -5,6 +5,7 @@
 package forme.modeli;
 
 import domen.Jelo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.table.AbstractTableModel;
@@ -16,10 +17,12 @@ import javax.swing.table.AbstractTableModel;
 public class ModelTabeleJelo extends AbstractTableModel {
 
     private List<Jelo> lista;
+    private final List<Jelo> originalnaLista;
     private final String[] kolone = {"ID", "Naziv jela", "Opis", "Kcal/100g", "Cena/100g"};
-
+    
     public ModelTabeleJelo(List<Jelo> lista) {
         this.lista = lista;
+        this.originalnaLista = new ArrayList<>(lista);
     }
 
     @Override
@@ -61,10 +64,10 @@ public class ModelTabeleJelo extends AbstractTableModel {
     }
 
     public void pretrazi(String naziv) {
-            List<Jelo> filteredList = lista.stream()
+        this.lista = originalnaLista.stream()
             .filter(f -> (naziv == null || naziv.isEmpty() || f.getNazivJela().toLowerCase().contains(naziv.toLowerCase())))
             .collect(Collectors.toList());
-        this.lista = filteredList;
+        
         fireTableDataChanged();    
     }   
 }

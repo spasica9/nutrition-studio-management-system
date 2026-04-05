@@ -17,18 +17,18 @@ public class Main {
 
     public static void main(String[] args) {
     try {
-        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                UIManager.setLookAndFeel(info.getClassName());
-                UIManager.put("control", new Color(200, 220, 240));
-                UIManager.put("nimbusBase", new Color(60, 120, 180)); 
-                UIManager.put("nimbusFocus", new Color(80, 140, 200));
-                UIManager.put("nimbusSelectedText", Color.WHITE);
-                UIManager.put("nimbusSelectionBackground", new Color(100, 150, 220));
-                UIManager.put("text", Color.BLACK);
-                break;
-            }
-        }
+        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+     
+        UIManager.put("TableHeader.background", new Color(60, 120, 180));
+        UIManager.put("TableHeader.foreground", Color.WHITE);
+        UIManager.put("Table.selectionBackground", new Color(180, 210, 240));
+        Font font = new Font("Segoe UI", Font.PLAIN, 13);
+        UIManager.put("Label.font", font);
+        UIManager.put("Button.font", new Font("Segoe UI", Font.BOLD, 13));
+        UIManager.put("Table.font", font);
+
+        UIManager.put("Panel.background", new Color(215, 225, 240));
+
     } catch (Exception e) {
         e.printStackTrace();
     }

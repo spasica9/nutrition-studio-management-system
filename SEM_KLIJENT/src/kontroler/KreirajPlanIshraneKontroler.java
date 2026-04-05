@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import komunikacija.Komunikacija;
 import koordinator.Koordinator;
 
@@ -76,7 +77,7 @@ public class KreirajPlanIshraneKontroler {
 
     modForme = mod;
     kpif.getCmbNutricionista().setSelectedItem(Koordinator.getInstance().getUlogovani());
-
+    
     
     switch (modForme) {
         case DODAJ:
@@ -88,80 +89,80 @@ public class KreirajPlanIshraneKontroler {
             kpif.getBtnObrisi().setVisible(true);
         break;
     
-        case IZMENI: 
-            PlanIshrane noviPlan = (PlanIshrane) Koordinator.getInstance().vratiParam("planIshrane");
-            planIshrane = noviPlan;
+       case IZMENI: 
+            planIshrane = (PlanIshrane) Koordinator.getInstance().vratiParam("planIshrane");
 
+            kpif.getCmbNutricionista().setSelectedItem(planIshrane.getNutricionista());
+            kpif.getCmbPacijent().setSelectedItem(planIshrane.getPacijent());
 
-            for (Nutricionista n : nutricioniste) {
-                if (n.equals(Koordinator.getInstance().getUlogovani())) {
-                    kpif.getCmbNutricionista().setSelectedItem(n);
-                }
-            }
-            for (Pacijent p : pacijenti) {
-                if (p.equals(noviPlan.getPacijent())) {
-                    kpif.getCmbPacijent().setSelectedItem(p);
-                }
-            }
-
-
-            List<StavkaPlanaIshrane> stavkeZaPrikaz = Komunikacija.getInstance().ucitajStavke(noviPlan.getIdPlanIshrane());
+            List<StavkaPlanaIshrane> ucitaneStavke = planIshrane.getStavke();
             int maxRb = 0;
-            for (StavkaPlanaIshrane s : stavkeZaPrikaz) {
-                if (s.getStatus() == null) s.setStatus(StatusStavke.POSTOJECA);
-                s.setPlanIshrane(planIshrane);
+            for (StavkaPlanaIshrane s : ucitaneStavke) {
+                s.setStatus(StatusStavke.POSTOJECA);
                 if (s.getRb() > maxRb) maxRb = s.getRb();
             }
-            planIshrane.setStavke(stavkeZaPrikaz); 
-            mtspi = new ModelTabeleStavkaPlanaIshrane(planIshrane.getStavke());
-            trenutniRedniBroj = maxRb + 1;
 
+            mtspi = new ModelTabeleStavkaPlanaIshrane(ucitaneStavke);
+            kpif.getTblStavke().setModel(mtspi);
+            trenutniRedniBroj = maxRb + 1;
 
             kpif.getTfNazivPlana().setText(planIshrane.getNazivPlana());
             kpif.getTfCenaPlana().setText(String.valueOf(planIshrane.getCenaPlana()));
+            kpif.getLblIznos().setText(String.valueOf(mtspi.getUkupanIznos()));
+
             kpif.getBtnSacuvaj().setVisible(false);
+            kpif.getBtnIzmeni().setVisible(true);
 
         break;
         
        case DETALJI:
-        try {
-            PlanIshrane planDetalji = (PlanIshrane) Koordinator.getInstance().vratiParam("planIshrane");
-            List<StavkaPlanaIshrane> stavke = Komunikacija.getInstance().ucitajStavke(planDetalji.getIdPlanIshrane());
+            planIshrane = (PlanIshrane) Koordinator.getInstance().vratiParam("planIshrane");
 
-            for (StavkaPlanaIshrane s : stavke) {
-                if (s.getStatus() == null) s.setStatus(StatusStavke.POSTOJECA);
-                s.setPlanIshrane(planDetalji);
+            List<StavkaPlanaIshrane> stavkeDet = planIshrane.getStavke();
+            if (stavkeDet == null) {
+               stavkeDet = new ArrayList<>();
             }
 
-            mtspi = new ModelTabeleStavkaPlanaIshrane(stavke);
-            kpif.getTblStavke().setModel(mtspi);
+             mtspi = new ModelTabeleStavkaPlanaIshrane(stavkeDet);
+             kpif.getTblStavke().setModel(mtspi);
+             kpif.getLblIznos().setText(String.valueOf(mtspi.getUkupanIznos()));
 
-            kpif.getLblIznos().setText(String.valueOf(mtspi.getUkupanIznos()));
+             kpif.getTfNazivPlana().setEnabled(false);
+             kpif.getTfCenaPlana().setEnabled(false);
+             kpif.getCmbNutricionista().setEnabled(false);
+             kpif.getCmbPacijent().setEnabled(false);
+             kpif.getTfJelo().setEnabled(false);
+             kpif.getTfKol().setEnabled(false);
+             kpif.getCmbDan().setEnabled(false);
+             kpif.getCmbVreme().setEnabled(false);
+             kpif.getTblJela().setEnabled(false);
 
-            kpif.getBtnIzmeni().setVisible(false);
-            kpif.getBtnSacuvaj().setVisible(false);
+             kpif.getBtnIzmeni().setVisible(false);
+             kpif.getBtnSacuvaj().setVisible(false);
+             kpif.getBtnObrisi().setVisible(false);
+             kpif.getBtnDodaj1().setVisible(false);
+             kpif.getBtnIzaberi().setVisible(false);
+             kpif.getBtnPretrazi().setVisible(false);
+             kpif.getBtnResetuj().setVisible(false);
+        break;
 
-            kpif.getCmbNutricionista().setSelectedItem(planDetalji.getNutricionista());
-            kpif.getCmbNutricionista().setEnabled(false);
-            kpif.getCmbPacijent().setSelectedItem(planDetalji.getPacijent());
-            kpif.getCmbPacijent().setEnabled(false);
-            kpif.getTfNazivPlana().setText(planDetalji.getNazivPlana());
-            kpif.getTfNazivPlana().setEnabled(false);
-            kpif.getTfCenaPlana().setText(String.valueOf(planDetalji.getCenaPlana()));
-            kpif.getTfCenaPlana().setEnabled(false);
 
-            kpif.getBtnObrisi().setVisible(false);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(kpif, "Greška pri učitavanju stavki!", "Greška", JOptionPane.ERROR_MESSAGE);
-        }
-    break;
-               
-               
     }
 
     kpif.getTblStavke().setModel(mtspi);
     kpif.getLblIznos().setText(String.valueOf(mtspi.getUkupanIznos()));
+    
+    kpif.getTblStavke().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    kpif.getTblStavke().getColumnModel().getColumn(0).setPreferredWidth(30);
+    kpif.getTblStavke().getColumnModel().getColumn(1).setPreferredWidth(100);
+    kpif.getTblStavke().getColumnModel().getColumn(2).setPreferredWidth(100);
+    kpif.getTblStavke().getColumnModel().getColumn(4).setPreferredWidth(80);
+    kpif.getTblStavke().getColumnModel().getColumn(8).setPreferredWidth(200);
+
+    kpif.getTblJela().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    kpif.getTblJela().getColumnModel().getColumn(0).setPreferredWidth(100);
+    kpif.getTblJela().getColumnModel().getColumn(1).setPreferredWidth(300);
+    kpif.getTblJela().getColumnModel().getColumn(2).setPreferredWidth(400);
 }
     
        public void pripremiFormuStavke() {
@@ -178,7 +179,7 @@ public class KreirajPlanIshraneKontroler {
     public void actionPerformed(ActionEvent e) {
         int red = kpif.getTblStavke().getSelectedRow();
         if (red == -1) {
-            JOptionPane.showMessageDialog(kpif, "Selektujte stavku u tabeli plana!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(kpif, "Nije izabrana stavka.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -200,7 +201,7 @@ public class KreirajPlanIshraneKontroler {
                 String cenaStr = kpif.getTfCenaPlana().getText().trim();
 
                 if (naziv.isEmpty() || cenaStr.isEmpty()) {
-                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Naziv ili cena nedostaju)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -209,7 +210,7 @@ public class KreirajPlanIshraneKontroler {
                 double ukupanIznosJela = mtspi.getUkupanIznos();
 
                 if (ukupanIznosJela <= 0) {
-                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Tabela je prazna)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -226,17 +227,14 @@ public class KreirajPlanIshraneKontroler {
 
                 JOptionPane.showMessageDialog(kpif, "Sistem je zapamtio plan ishrane.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
 
-                int potvrda = JOptionPane.showConfirmDialog(kpif, "Da li želite da kreirate još jedan plan?", "Novi plan", JOptionPane.YES_NO_OPTION);
-                if (potvrda == JOptionPane.YES_OPTION) {
-                    Koordinator.getInstance().otvoriFormuDodajPlanIshrane();
-                }
+                
                 kpif.dispose();
 
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Cena mora biti broj)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane. (Greška na serveru)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(kpif, "Sistem ne može da zapamti plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
             }
         }
     });
@@ -358,6 +356,14 @@ public class KreirajPlanIshraneKontroler {
         }
     }
 });
+       kpif.getBtnResetuj().addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            kpif.getTfJelo().setText("");
+            ModelTabeleJelo mtj = (ModelTabeleJelo) kpif.getTblJela().getModel();
+            mtj.pretrazi(""); 
+        }
+    });
         
     }
     

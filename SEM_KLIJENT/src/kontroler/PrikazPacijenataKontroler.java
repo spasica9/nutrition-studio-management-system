@@ -59,6 +59,8 @@ public class PrikazPacijenataKontroler {
         }
         ppf.getCmbMesto().setSelectedIndex(-1);
         ppf.getCmbTip().setSelectedIndex(-1);
+        ppf.getTfIme().setText("");
+        ppf.getTfPrezime().setText("");
                 
     }
 
@@ -76,9 +78,7 @@ public class PrikazPacijenataKontroler {
 
                 ModelTabelePacijent mtp = (ModelTabelePacijent) ppf.getTblPacijenti().getModel();
                 Pacijent p = mtp.getLista().get(red);
-                int potvrda = JOptionPane.showConfirmDialog(ppf, "Da li ste sigurni da želite da obrišete pacijenta: " + p.getIme() + " " + p.getPrezime() + "?", "Potvrda brisanja", JOptionPane.YES_NO_OPTION);
-
-                if (potvrda == JOptionPane.YES_OPTION) {
+                
                     try {
                         Komunikacija.getInstance().obrisiPacijenta(p);
                         JOptionPane.showMessageDialog(ppf, "Sistem je obrisao pacijenta.", "USPEH", JOptionPane.INFORMATION_MESSAGE);
@@ -99,14 +99,14 @@ public class PrikazPacijenataKontroler {
                         JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše pacijenta: " + ex.getMessage(), "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-            }
+            
         });
         ppf.addBtnAzurirajActionListener (new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int red = ppf.getTblPacijenti().getSelectedRow();
                 if (red == -1) {
-                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da učita pacijenta. Niste izabrali red.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da učita pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -138,12 +138,12 @@ public class PrikazPacijenataKontroler {
                    List<Pacijent> rezultati = Komunikacija.getInstance().pronadjiPacijente(p);
 
                    if (rezultati == null || rezultati.isEmpty()) {
-                       JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe pacijente po zadatim kriterijumima.", "Greška", JOptionPane.INFORMATION_MESSAGE);
+                       JOptionPane.showMessageDialog(ppf, "Sistem ne može da pronađe pacijente po zadatim kriterijumima.", "Greška", JOptionPane.ERROR_MESSAGE);
                        ppf.getTblPacijenti().setModel(new ModelTabelePacijent(new ArrayList<>()));
                    } else {
                        ModelTabelePacijent mtp = new ModelTabelePacijent(rezultati);
                        ppf.getTblPacijenti().setModel(mtp);
-                       JOptionPane.showMessageDialog(ppf, "Sistem je našao pacijente po zadatim kriterijumima.", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
+                       JOptionPane.showMessageDialog(ppf, "Sistem je pronašao pacijente po zadatim kriterijumima.", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
                    }
                } catch (Exception ex) {
                    JOptionPane.showMessageDialog(ppf, "Greška prilikom komunikacije sa serverom: " + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);

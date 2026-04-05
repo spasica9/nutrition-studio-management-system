@@ -4,25 +4,15 @@
  */
 package kontroler;
 
-import domen.Mesto;
+import domen.Nutricionista;
+import domen.Pacijent;
 import domen.PlanIshrane;
-import domen.StavkaPlanaIshrane;
-import domen.TipIshrane;
 import forme.PrikazPlanovaIshraneForma;
-import forme.modeli.ModelTabelePacijent;
 import forme.modeli.ModelTabelePlanIshrane;
-import forme.modeli.ModelTabeleStavkaPlanaIshrane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import koordinator.Koordinator;
@@ -47,90 +37,94 @@ public class PrikazPlanovaIshraneKontroler {
     }
 
     private void pripremiFormu() {
-        List<PlanIshrane> planovi = Komunikacija.getInstance().ucitajPlanove();
-        ModelTabelePlanIshrane mtpi = new ModelTabelePlanIshrane(planovi);
-        ppif.getTblPlanovi().setModel(mtpi);
-        
-        List<StavkaPlanaIshrane> stavke = new ArrayList<>();
-        ModelTabeleStavkaPlanaIshrane mtspi = new ModelTabeleStavkaPlanaIshrane(stavke);
-        ppif.getTblStavke().setModel(mtspi);
+        try {
+            List<Nutricionista> nutricionisti = Komunikacija.getInstance().ucitajNutricioniste();
+            DefaultComboBoxModel modelN = new DefaultComboBoxModel();
+            Nutricionista sviN = new Nutricionista();
+            sviN.setIdNutricionista(-1);
+            sviN.setIme("Svi");
+            sviN.setPrezime("nutricionisti");
+            modelN.addElement(sviN); 
+            for (Nutricionista n : nutricionisti) modelN.addElement(n);
+            ppif.getCmbNutricionista().setModel(modelN);
+            List<Pacijent> pacijenti = Komunikacija.getInstance().ucitajPacijente();
+            DefaultComboBoxModel modelP = new DefaultComboBoxModel();
+            Pacijent sviP = new Pacijent();
+            sviP.setIdPacijent(-1);
+            sviP.setIme("Svi");
+            sviP.setPrezime("pacijenti");
+            modelP.addElement(sviP);
+            for (Pacijent p : pacijenti) modelP.addElement(p);
+            ppif.getCmbPacijent().setModel(modelP);
+            List<PlanIshrane> planovi = Komunikacija.getInstance().ucitajPlanove();
+            ppif.getTblPlanovi().setModel(new ModelTabelePlanIshrane(planovi));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addActionListener() {}
 
     private void addMouseListener() {
-        ppif.getTblPlanovi().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int red = ppif.getTblPlanovi().getSelectedRow();
-                if (red!=-1) {
-                    ModelTabelePlanIshrane mtpi = (ModelTabelePlanIshrane) ppif.getTblPlanovi().getModel();
-                    PlanIshrane p = mtpi.getLista().get(red);
-                    List<StavkaPlanaIshrane> stavke = Komunikacija.getInstance().ucitajStavke(p.getIdPlanIshrane());
-                    ModelTabeleStavkaPlanaIshrane mtspi = new ModelTabeleStavkaPlanaIshrane(stavke);
-                    ppif.getTblStavke().setModel(mtspi);
-                }
-            }
-        });
         
         ppif.addBtnPretraziActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String imeN = ppif.getTfNutricionistaIme().getText().trim();
-                String prezimeN = ppif.getTfNutricionistaPrezime().getText().trim();
-                String imeP = ppif.getTfPacijentIme().getText().trim();
-                String prezimeP = ppif.getTfPacijentPrezime().getText().trim();
-                
-                if (imeN.isEmpty() && prezimeN.isEmpty() && imeP.isEmpty() && prezimeP.isEmpty()) {
-         
-                    pripremiFormu();
-                    return;
+                Nutricionista n = (Nutricionista) ppif.getCmbNutricionista().getSelectedItem();
+                Pacijent p = (Pacijent) ppif.getCmbPacijent().getSelectedItem();
+
+                PlanIshrane filter = new PlanIshrane();
+                filter.setNutricionista(n);
+                filter.setPacijent(p);
+
+                try {
+                    List<PlanIshrane> lista = Komunikacija.getInstance().pronadjiPlanove(filter);
+                    if (lista.isEmpty()) {
+                        JOptionPane.showMessageDialog(ppif, "Sistem ne može da nađe planove ishrane po zadatim kriterijumima.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                        pripremiFormu();
+                    } else {
+                        JOptionPane.showMessageDialog(ppif, "Sistem je našao planove ishrane po zadatim kriterijumima.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
+                        ppif.getTblPlanovi().setModel(new ModelTabelePlanIshrane(lista));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-                
-                ModelTabelePlanIshrane mtp = (ModelTabelePlanIshrane) ppif.getTblPlanovi().getModel();
-                mtp.pretrazi(imeN, prezimeN, imeP, prezimeP);
-                if (mtp.getLista().isEmpty()) {
-                    JOptionPane.showMessageDialog(ppif, "Sistem ne može da nađe planove ishrane po zadatim kriterijumima", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
-                    pripremiFormu();
-                } else {
-                    JOptionPane.showMessageDialog(ppif, "Sistem je našao planove ishrane po zadatim kriterijumima", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
-                    
-                }
-                
             }
         });
         
         
         ppif.addBtnResetujActionListener(new ActionListener() {
-            @Override
+           @Override
             public void actionPerformed(ActionEvent e) {
+                ppif.getCmbNutricionista().setSelectedIndex(0);
+                ppif.getCmbPacijent().setSelectedIndex(0);
                 pripremiFormu();
-                ppif.getTfNutricionistaIme().setText("");
-                ppif.getTfNutricionistaPrezime().setText("");
-                ppif.getTfPacijentIme().setText("");
-                ppif.getTfPacijentPrezime().setText(""); 
             }
-            
         });
         
         ppif.addBtnDetaljiActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int red = ppif.getTblPlanovi().getSelectedRow();
-                if(red==-1){
-                JOptionPane.showMessageDialog(ppif, "Sistem ne može da nađe plan ishrane.", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
-                }else{
+                if (red == -1) {
+                    JOptionPane.showMessageDialog(ppif, "Sistem ne može da učita plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                ModelTabelePlanIshrane mtpi = (ModelTabelePlanIshrane) ppif.getTblPlanovi().getModel();
+                PlanIshrane p = mtpi.getLista().get(red);
+
+                try {
+                    PlanIshrane ucitaniPlan = Komunikacija.getInstance().ucitajPlanIshrane(p);
                     
-                        JOptionPane.showMessageDialog(ppif, "Sistem je našao plan ishrane.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
-                        ModelTabelePlanIshrane mtpi  = (ModelTabelePlanIshrane) ppif.getTblPlanovi().getModel();
-                        PlanIshrane plan = mtpi.getLista().get(red);
-                        Koordinator.getInstance().dodajParam("planIshrane", plan);
-                    try {
+                    if (ucitaniPlan != null) {
+                        JOptionPane.showMessageDialog(ppif, "Sistem je učitao plan ishrane.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
+                        Koordinator.getInstance().dodajParam("planIshrane", ucitaniPlan);
                         Koordinator.getInstance().otvoriDetaljiPlanaFormu();
-                    } catch (Exception ex) {
-                        Logger.getLogger(PrikazPlanovaIshraneKontroler.class.getName()).log(Level.SEVERE, null, ex);
                     }
-            }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(ppif, "Sistem ne može da učita plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 

@@ -42,7 +42,6 @@ public class IzmeniPlanIshraneKontroler {
     public IzmeniPlanIshraneKontroler(IzmeniPlanIshraneForma ipif) {
         this.ipif = ipif;
         addActionListener();
-        addMouseListener();
     }
      public void otvoriFormu() throws Exception {
         pripremiFormu();
@@ -59,7 +58,6 @@ public class IzmeniPlanIshraneKontroler {
         
         List<StavkaPlanaIshrane> stavke = new ArrayList<>();
         ModelTabeleStavkaPlanaIshrane mts = new ModelTabeleStavkaPlanaIshrane(stavke);
-        ipif.getTblStavke().setModel(mts);
     }
       
       
@@ -75,9 +73,9 @@ public class IzmeniPlanIshraneKontroler {
                 mtpi.pretraziP(imePacijenta,prezimePacijenta);
                 
                 if (mtpi.getLista().isEmpty()) {
-                    JOptionPane.showMessageDialog(ipif, "Sistem ne može da nađe planove ishrane po zadatim kriterijumima.", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ipif, "Sistem ne može da pronađe planove ishrane po zadatim kriterijumima.", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(ipif, "Sistem je našao planove ishrane po zadatim kriterijumima.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(ipif, "Sistem je pronašao planove ishrane po zadatim kriterijumima.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
                 }
                 
             }
@@ -96,56 +94,34 @@ public class IzmeniPlanIshraneKontroler {
         });
         
         ipif.addBtnIzmeniActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+          @Override
+    public void actionPerformed(ActionEvent e) {
                 int red = ipif.getTblPlanovi().getSelectedRow();
-                if (red == -1) {
-                    JOptionPane.showMessageDialog(ipif, "Sistem ne može da nađe plan ishrane.", "NEUSPEŠNO", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ipif, "Sistem je našao plan ishrane.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
-                    ModelTabelePlanIshrane mtpi = (ModelTabelePlanIshrane) ipif.getTblPlanovi().getModel();
-
-                   PlanIshrane planIshrane = mtpi.getLista().get(red);
-                   Koordinator.getInstance().dodajParam("planIshrane", planIshrane);
-                   ipif.dispose();
-                     try {
-                         Koordinator.getInstance().otvoriIzmeniPlanIshraneFormuUlogovanog();
-                     } catch (Exception ex) {
-                         Logger.getLogger(IzmeniPlanIshraneKontroler.class.getName()).log(Level.SEVERE, null, ex);
-                     }
-                }
-
-            }
-
-        });
-    }
-
-    private void addMouseListener() {
-        ipif.getTblPlanovi().addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int red = ipif.getTblPlanovi().getSelectedRow();
-                if(red!=-1){
-                ModelTabelePlanIshrane mtpi = (ModelTabelePlanIshrane) ipif.getTblPlanovi().getModel();
-                PlanIshrane pi = mtpi.getLista().get(red);
-                List<StavkaPlanaIshrane> stavke;
+                if (red != -1) {
                     try {
-                        stavke = Komunikacija.getInstance().ucitajStavke(pi.getIdPlanIshrane());
-                        ModelTabeleStavkaPlanaIshrane mtspi = new ModelTabeleStavkaPlanaIshrane(stavke);
-                ipif.getTblStavke().setModel(mtspi);
-                    } catch (Exception ex) {
-                        Logger.getLogger(PrikazPlanovaIshraneKontroler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                
-                
-                }
+                        ModelTabelePlanIshrane mtpi = (ModelTabelePlanIshrane) ipif.getTblPlanovi().getModel();
+                        PlanIshrane selektovani = mtpi.getLista().get(red);
 
+                        PlanIshrane kompletanPlan = Komunikacija.getInstance().ucitajPlanIshrane(selektovani);
+
+                        if (kompletanPlan != null) {
+                            JOptionPane.showMessageDialog(ipif, "Sistem je učitao plan ishrane.", "USPEŠNO", JOptionPane.INFORMATION_MESSAGE);
+                            Koordinator.getInstance().dodajParam("planIshrane", kompletanPlan);
+                            ipif.dispose(); 
+                            Koordinator.getInstance().otvoriIzmeniPlanIshraneFormuUlogovanog();
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(ipif, "Sistem ne može da učita plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(ipif, "Sistem ne može da učita plan ishrane.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            
-            
-            
         });
     }
+
+   
+    
 
     }
 

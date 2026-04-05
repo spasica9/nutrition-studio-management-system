@@ -6,7 +6,7 @@ package kontroler;
 
 
 import domen.Sertifikat;
-import forme.UbaciSertifikatForma;
+import forme.KreirajSertifikatForma;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -17,11 +17,11 @@ import komunikacija.Komunikacija;
  *
  * @author anas
  */
-public class UbaciSertifikatKontroler {
+public class KreirajSertifikatKontroler {
     
-     private final UbaciSertifikatForma usf;
+     private final KreirajSertifikatForma usf;
 
-    public UbaciSertifikatKontroler(UbaciSertifikatForma usf) {
+    public KreirajSertifikatKontroler(KreirajSertifikatForma usf) {
         this.usf = usf;
         addActionListener();
     }

@@ -12,7 +12,7 @@ import operacije.ApstraktnaGenerickaOperacija;
  *
  * @author anas
  */
-public class PrijavaOperacija extends ApstraktnaGenerickaOperacija {
+public class PrijaviNutricionistaSO extends ApstraktnaGenerickaOperacija {
 
     Nutricionista nutricionista;
 
@@ -22,8 +22,22 @@ public class PrijavaOperacija extends ApstraktnaGenerickaOperacija {
     
      @Override
     protected void preduslovi(Object param) throws Exception {
-        if(param==null || !(param instanceof Nutricionista)){
-            throw new Exception("Korisnicko ime i sifra nisu ispravni.");
+        if (param == null || !(param instanceof Nutricionista)) {
+        throw new Exception("Korisnicko ime i sifra nisu ispravni.");
+        }
+
+        Nutricionista n = (Nutricionista) param;
+
+        if (n.getKorisnickoIme() == null || n.getKorisnickoIme().isEmpty()) {
+            throw new Exception("Korisnicko ime ne sme biti prazno.");
+        }
+
+        if (n.getSifra() == null || n.getSifra().isEmpty()) {
+            throw new Exception("Sifra ne sme biti prazna.");
+        }
+
+        if (n.getKorisnickoIme().length() > 30) {
+            throw new Exception("Korisnicko ime je predugacko.");
         }
     }
     @Override

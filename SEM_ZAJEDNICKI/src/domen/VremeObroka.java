@@ -9,10 +9,8 @@ package domen;
  * @author anas
  */
 public enum VremeObroka {
-    
     DORUCAK,
     RUCAK,
     VECERA,
     UZINA
-    
 }

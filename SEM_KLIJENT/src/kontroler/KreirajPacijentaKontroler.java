@@ -67,6 +67,7 @@ public class KreirajPacijentaKontroler {
                dpf.getBtnDodaj().setVisible(false);
                dpf.getBtnAzuriraj().setVisible(true);
                dpf.getBtnAzuriraj().setEnabled(true);
+               dpf.getTfID().setEditable(false);
                Pacijent p = (Pacijent) Koordinator.getInstance().vratiParam("pacijent");
                dpf.getTfIme().setText(p.getIme());
                dpf.getTfPrezime().setText(p.getPrezime());
@@ -113,7 +114,7 @@ public class KreirajPacijentaKontroler {
                 dpf.getTfID().setEnabled(false);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(dpf, "Greška pri učitavanju pacijenta!", "Greška", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dpf, "Greška pri učitavanju pacijenta.", "Greška", JOptionPane.ERROR_MESSAGE);
             }
                    break;
            }
@@ -151,38 +152,38 @@ public class KreirajPacijentaKontroler {
                 Mesto mesto = (Mesto) dpf.getCmbMesto().getSelectedItem();
                 
                 if (ime.isEmpty() && prezime.isEmpty() && email.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (ime.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete ime pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (!ime.matches("[a-zA-ZšđčćžŠĐČĆŽ\\s]+")) {
-                    JOptionPane.showMessageDialog(dpf, "Ime koje ste uneli nije odgovarajuće", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (prezime.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete prezime pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (!prezime.matches("[a-zA-ZšđčćžŠĐČĆŽ\\s]+")) {
-                    JOptionPane.showMessageDialog(dpf, "Prezime koje ste uneli nije odgovarajuće", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (email.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete email pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (!email.contains("@")) {
-                    JOptionPane.showMessageDialog(dpf, "Email nije u odgovarajućem formatu", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
                 if (datum.isEmpty()) {
-                     JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete datum rođenja", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                     JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                      return;
                 }
 
@@ -190,17 +191,17 @@ public class KreirajPacijentaKontroler {
                 try {
                     datumRodjenja = parseDatumStrict(datum);
                 } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(dpf, "Datum mora biti u formatu dd.MM.yyyy", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (tipIshrane == null) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da izaberete tip ishrane", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                 return;
                 }
 
                 if (mesto == null) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da izaberete mesto", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                 return;
                 }
                 
@@ -239,38 +240,38 @@ public class KreirajPacijentaKontroler {
                 Mesto mesto = (Mesto) dpf.getCmbMesto().getSelectedItem();
                 
                 if (ime.isEmpty() && prezime.isEmpty() && email.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (ime.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete ime pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (!ime.matches("[a-zA-ZšđčćžŠĐČĆŽ\\s]+")) {
-                    JOptionPane.showMessageDialog(dpf, "Ime koje ste uneli nije odgovarajuće", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (prezime.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete prezime pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (!prezime.matches("[a-zA-ZšđčćžŠĐČĆŽ\\s]+")) {
-                    JOptionPane.showMessageDialog(dpf, "Prezime koje ste uneli nije odgovarajuće", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (email.isEmpty()) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete email pacijenta", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (!email.contains("@")) {
-                    JOptionPane.showMessageDialog(dpf, "Email nije u odgovarajućem formatu", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
                 if (datum.isEmpty()) {
-                     JOptionPane.showMessageDialog(dpf, "Potrebno je da unesete datum rođenja", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                     JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                      return;
                 }
 
@@ -278,17 +279,17 @@ public class KreirajPacijentaKontroler {
                try {
                     datumRodjenja = parseDatumStrict(datum);
                 } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(dpf, "Datum mora biti u formatu dd.MM.yyyy (npr. 20.05.2000)", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (tipIshrane == null) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da izaberete tip ishrane", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                 return;
                 }
 
                 if (mesto == null) {
-                    JOptionPane.showMessageDialog(dpf, "Potrebno je da izaberete mesto", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti pacijenta.", "GREŠKA", JOptionPane.ERROR_MESSAGE);
                 return;
                 }
                 

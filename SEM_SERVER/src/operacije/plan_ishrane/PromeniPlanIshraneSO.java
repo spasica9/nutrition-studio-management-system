@@ -18,33 +18,37 @@ public class PromeniPlanIshraneSO extends ApstraktnaGenerickaOperacija {
     @Override
     protected void preduslovi(Object param) throws Exception {
         if (!(param instanceof PlanIshrane)) {
-            throw new Exception("Sistem ne može da zapamti plan ishrane");
+            throw new Exception("Sistem ne može da zapamti plan ishrane.");
         }
     }
 
     @Override
     protected void izvrsiOperaciju(Object param, String kljuc) throws Exception {
         PlanIshrane pi = (PlanIshrane) param;
+        broker.edit(pi); 
+
         List<StavkaPlanaIshrane> stavke = pi.getStavke();
+        if (stavke != null) {
+            for (StavkaPlanaIshrane s : stavke) {
+                s.setPlanIshrane(pi);
 
-        for (StavkaPlanaIshrane s : stavke) {
-            s.setPlanIshrane(pi);
+                if (s.getStatus() == null) continue;
 
-            switch (s.getStatus()) {
-                case NOVA:
-                    broker.add(s);
-                    break;
-                case OBRISANA:
-                    broker.delete(s);
-                    break;
-                case IZMENJENA:
-                    broker.edit(s);  
-                    break;
-                
+                switch (s.getStatus()) {
+                    case NOVA:
+                        broker.add(s);
+                        break;
+                    case OBRISANA:
+                        broker.delete(s);
+                        break;
+                    case IZMENJENA:
+                        broker.edit(s);  
+                        break;
+                    case POSTOJECA:
+                        break;
+                }
             }
         }
-
-        broker.edit(pi);  
     }
     
 }

@@ -127,16 +127,6 @@ public class Komunikacija {
         return planovi;
     }
 
-    public List<StavkaPlanaIshrane> ucitajStavke(int idPlanIshrane) {
-        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_STAVKE, idPlanIshrane);
-        List<StavkaPlanaIshrane> stavke = new ArrayList<>();
-        posiljalac.posalji(zahtev);
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        stavke = (List<StavkaPlanaIshrane>) odgovor.getOdgovor();
-        System.out.println("KLASA Komunikacija: " + stavke);
-        return stavke;
-    }
-
     public List<Nutricionista> ucitajNutricioniste() {
         Zahtev zahtev = new Zahtev(Operacija.VRATI_LISTU_NUTRICIONISTA, null);
         List<Nutricionista> nutricioniste = new ArrayList<>();
@@ -220,6 +210,24 @@ public class Komunikacija {
         Odgovor odg = (Odgovor) primalac.primi();
         pacijenti = (List<Pacijent>) odg.getOdgovor();
         return pacijenti;
+    }
+
+    public List<PlanIshrane> pronadjiPlanove(PlanIshrane planIshrane) {
+        Zahtev zahtev = new Zahtev(Operacija.PRONADJI_PLANOVE_ISHRANE, planIshrane);
+        List<PlanIshrane> planovi = new ArrayList<>();
+        posiljalac.posalji(zahtev);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        planovi = (List<PlanIshrane>) odg.getOdgovor();
+        return planovi;
+    }
+
+    public PlanIshrane ucitajPlanIshrane(PlanIshrane plan) {
+        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_PLAN_ISHRANE, plan);
+        posiljalac.posalji(zahtev);
+        Odgovor odg = (Odgovor) primalac.primi();
+        PlanIshrane ucitanPlan = (PlanIshrane)odg.getOdgovor();
+        return ucitanPlan;    
     }
     
     

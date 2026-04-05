@@ -3,20 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/koordinator/Koordinator.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/PrikazPacijenataForma.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/koordinator/Koordinator.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/KreirajPacijentaKontroler.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/komunikacija/Komunikacija.java</file>
-            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/DodajStavkuKontroler.java</file>
-            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/KreirajPacijentaForma.java</file>
-            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/PrijavaForma.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/PrikazPlanovaIshraneForma.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/IzmeniPlanIshraneForma.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/PrikazPlanaIshraneForma.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/PrijavaKontroler.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/modeli/ModelTabeleStavkaPlanaIshrane.java</file>
-            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/IzmeniPlanIshraneKontroler.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/modeli/ModelTabeleJelo.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/KreirajPlanIshraneForma.java</file>
-            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/DodajStavkuForma.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/PrikazPlanovaIshraneKontroler.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/forme/GlavnaForma.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/KreirajPlanIshraneKontroler.java</file>
             <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/PrikazPacijenataKontroler.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/kontroler/PrikazPlanaIshraneKontroler.java</file>
+            <file>file:/D:/projekti/PS/SEM_KLIJENT/src/main/Main.java</file>
         </group>
     </open-files>
 </project-private>

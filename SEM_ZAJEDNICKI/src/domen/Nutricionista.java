@@ -94,7 +94,9 @@ public class Nutricionista implements ApstraktniDomenskiObjekat {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.korisnickoIme);
+        hash = 97 * hash + Objects.hashCode(this.sifra);
         return hash;
     }
 

@@ -12,20 +12,33 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/mesto/UcitajMestaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/UcitajPacijentaSO.java</file>
             <file>file:/D:/projekti/PS/SEM_SERVER/src/repozitorijum/Repozitorijum.java</file>
             <file>file:/D:/projekti/PS/SEM_SERVER/src/niti/ObradaKlijentskihZahteva.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/repozitorijum/db/DbRepozitorijum.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/nutricionista/PrijavaOperacija.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/plan_ishrane/VratiListuPlanIshraneSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/plan_ishrane/ZapamtiPlanIshraneSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/PronadjiPacijenteSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/plan_ishrane/UcitajPlanIshraneSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/VratiListuSvihPacijenataSO.java</file>
             <file>file:/D:/projekti/PS/SEM_SERVER/src/kontroler/Kontroler.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/konfiguracija/Konfiguracija.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/PromeniPacijentaSO.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/VratiListuSviPacijentSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/ZapamtiPacijentaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/jelo/VratiListuSvihJelaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/test/operacije/pacijent/ZapamtiPacijentaSOTest.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/nutricionista/VratiListuSvihNutricionistaSO.java</file>
             <file>file:/D:/projekti/PS/SEM_SERVER/src/server/Server.java</file>
             <file>file:/D:/projekti/PS/SEM_SERVER/src/repozitorijum/db/DbGenerickiRepozitorijum.java</file>
             <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/ApstraktnaGenerickaOperacija.java</file>
-            <file>file:/D:/projekti/PS/SEM_SERVER/src/repozitorijum/db/DbConnectionFactory.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/nutricionista/PrijaviNutricionistaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/plan_ishrane/PromeniPlanIshraneSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/ObrisiPacijentaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/plan_ishrane/VratiListuSvihPlanovaIshraneSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/test/operacije/pacijent/ObrisiPacijentaSOTest.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/test/operacije/nutricionista/PrijaviNutricionistaSOTest.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/repozitorijum/db/DbRepozitorijum.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/mesto/VratiListuSvihMestaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/main/Main.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/pacijent/PromeniPacijentaSO.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/test/operacije/plan_ishrane/ZapamtiPlanIshraneSOTest.java</file>
+            <file>file:/D:/projekti/PS/SEM_SERVER/src/operacije/plan_ishrane/PronadjiPlanoveIshraneSO.java</file>
         </group>
     </open-files>
 </project-private>

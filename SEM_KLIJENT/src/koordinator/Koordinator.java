@@ -6,7 +6,6 @@ package koordinator;
 
 
 import domen.Nutricionista;
-import forme.DodajStavkuForma;
 import forme.KreirajPacijentaForma;
 import forme.GlavnaForma;
 import forme.PrijavaForma;
@@ -21,12 +20,13 @@ import forme.FormaMod;
 import forme.IzmeniPlanIshraneForma;
 import forme.KreirajPlanIshraneForma;
 import forme.PrikazPlanovaIshraneForma;
-import forme.UbaciSertifikatForma;
-import kontroler.DodajStavkuKontroler;
+import forme.KreirajSertifikatForma;
 import kontroler.IzmeniPlanIshraneKontroler;
 import kontroler.KreirajPlanIshraneKontroler;
 import kontroler.PrikazPlanovaIshraneKontroler;
-import kontroler.UbaciSertifikatKontroler;
+import kontroler.KreirajSertifikatKontroler;
+import kontroler.PrikazPlanaIshraneKontroler;
+import forme.PrikazPlanaIshraneForma;
 
 /**
  *
@@ -43,9 +43,9 @@ public class Koordinator {
     private Map<String, Object> parametri;
     private PrikazPlanovaIshraneKontroler prikazPIKontroler;
     public KreirajPlanIshraneKontroler kreirajPIKontroler;
-    private DodajStavkuKontroler dodajSKontroler;
-    private UbaciSertifikatKontroler ubaciSKontroler;
+    private KreirajSertifikatKontroler ubaciSKontroler;
     private IzmeniPlanIshraneKontroler izmeniPIKontroler;
+    private PrikazPlanaIshraneKontroler detaljiPIKontroler;
     
     public Nutricionista getUlogovani() {
         return ulogovani;
@@ -118,14 +118,9 @@ public class Koordinator {
         kreirajPIKontroler = new KreirajPlanIshraneKontroler(new KreirajPlanIshraneForma());
         kreirajPIKontroler.otvoriFormu(FormaMod.DODAJ);
     }
-    
-    public void otvoriDodajStavkuFormu(KreirajPlanIshraneForma kpif) {
-        dodajSKontroler = new DodajStavkuKontroler(new DodajStavkuForma(kpif, true));
-        dodajSKontroler.otvoriFormu();
-    }
 
     public void otvoriFormuUbaciSertifikat() {
-        ubaciSKontroler = new UbaciSertifikatKontroler(new UbaciSertifikatForma());
+        ubaciSKontroler = new KreirajSertifikatKontroler(new KreirajSertifikatForma());
         ubaciSKontroler.otvoriFormu();
     }
 
@@ -140,8 +135,8 @@ public class Koordinator {
     }
     
     public void otvoriDetaljiPlanaFormu() throws Exception {
-        kreirajPIKontroler = new KreirajPlanIshraneKontroler(new KreirajPlanIshraneForma());
-        kreirajPIKontroler.otvoriFormu(FormaMod.DETALJI);
+        detaljiPIKontroler = new PrikazPlanaIshraneKontroler(new PrikazPlanaIshraneForma());
+        detaljiPIKontroler.otvoriFormu();
     }
 
     public void otvoriDetaljiPacijentaFormu() {

@@ -117,11 +117,6 @@ public class ObradaKlijentskihZahteva extends Thread {
                         System.out.println("KLASA OKZ: " + planovi);
                         odgovor.setOdgovor(planovi);
                         break;
-                    case UCITAJ_STAVKE:
-                        List<StavkaPlanaIshrane> stavke = Kontroler.getInstance().ucitajStavke((int)zahtev.getParametar());
-                        System.out.println("KLASA OKZ: " + stavke);
-                        odgovor.setOdgovor(stavke);
-                        break;
                     case VRATI_LISTU_NUTRICIONISTA:
                         List<Nutricionista> nutricioniste = Kontroler.getInstance().ucitajNutricioniste();
                         odgovor.setOdgovor(nutricioniste);
@@ -170,9 +165,19 @@ public class ObradaKlijentskihZahteva extends Thread {
                           break;
                        case PRONADJI_PACIJENTE:
                            Pacijent pacijent2 = (Pacijent) zahtev.getParametar();
-                           List<Pacijent> pacijentiImePrezime = Kontroler.getInstance().pronadjiPacijentePoImenuPrezimenu(pacijent2);  
-                           odgovor.setOdgovor(pacijentiImePrezime);
+                           List<Pacijent> pacijenti2 = Kontroler.getInstance().pronadjiPacijente(pacijent2);  
+                           odgovor.setOdgovor(pacijenti2);
                            break;
+                       case UCITAJ_PLAN_ISHRANE:
+                         PlanIshrane plan1 = (PlanIshrane) zahtev.getParametar();
+                         PlanIshrane ucitaniPlan = Kontroler.getInstance().ucitajPlanIshrane(plan1); 
+                         odgovor.setOdgovor(ucitaniPlan);
+                         break;
+                      case PRONADJI_PLANOVE_ISHRANE:
+                          PlanIshrane plan2 = (PlanIshrane) zahtev.getParametar();
+                          List<PlanIshrane> planovi2 = Kontroler.getInstance().pronadjiPlanove(plan2);  
+                          odgovor.setOdgovor(planovi2);
+                          break;   
                     default: System.out.println("Greska! Operacija nepostojeca");
                 }
              posiljalac.posalji(odgovor);
